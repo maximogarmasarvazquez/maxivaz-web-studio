@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <>
       <Hero />
-       <About />
+      <About />
       <FloatingNav />
       <Services />
       <Benefits />

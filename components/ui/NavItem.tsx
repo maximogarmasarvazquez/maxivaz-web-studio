@@ -2,26 +2,52 @@ export default function NavItem({
   href,
   icon,
   label,
+  onClick,
+  vertical = false,
+  isActive = false,
 }: {
   href: string;
   icon: React.ReactNode;
   label: string;
+  onClick?: () => void;
+  vertical?: boolean;
+  isActive?: boolean;
 }) {
   return (
     <a
       href={href}
-      className="group flex items-center gap-4 text-sm hover:text-white transition"
+      onClick={onClick}
+      className={`group flex ${
+        vertical ? "flex-col items-center gap-2" : "items-center gap-4"
+      } text-sm transition`}
     >
-      <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 group-hover:bg-white/20 transition">
+      {/* ICON */}
+      <div
+        className={`
+          w-12 h-12 flex items-center justify-center rounded-xl transition-all duration-300
 
-        {/* icono centrado */}
-        <div className="flex items-center justify-center w-full h-full">
-          {icon}
-        </div>
-
+          ${
+            isActive
+              ? "bg-black text-white dark:bg-white dark:text-black scale-110 shadow-md"
+              : "bg-black/5 text-black/70 hover:bg-black/10 hover:text-black dark:bg-white/10 dark:text-white/70 dark:hover:bg-white/20 dark:hover:text-white"
+          }
+        `}
+      >
+        {icon}
       </div>
 
-      <span className="opacity-80 group-hover:opacity-100 transition">
+      {/* LABEL */}
+      <span
+        className={`
+          transition
+
+          ${
+            isActive
+              ? "text-black dark:text-white font-medium"
+              : "text-black/60 dark:text-white/60 group-hover:text-black dark:group-hover:text-white"
+          }
+        `}
+        >
         {label}
       </span>
     </a>

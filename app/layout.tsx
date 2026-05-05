@@ -1,10 +1,6 @@
 import "./globals.css";
 import FloatingNav from "@/components/layout/FloatingNav";
-
-export const metadata = {
-  title: "Maxivaz Web Studio",
-  description: "Desarrollo de páginas web modernas",
-};
+import ThemeProvider from "@/components/theme/ThemeProvider";
 
 export default function RootLayout({
   children,
@@ -13,13 +9,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className="bg-[#0B0B0B] text-white">
+<body className="bg-white text-black dark:bg-[#0B0B0B] dark:text-white transition-colors duration-300">
+        <ThemeProvider>
 
-        <FloatingNav />
+          <FloatingNav />
 
-        <main>
-          {children}
-        </main>
+          <main>
+            {children}
+          </main>
+
+        </ThemeProvider>
 
       </body>
     </html>
