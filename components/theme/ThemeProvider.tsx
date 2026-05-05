@@ -37,7 +37,7 @@ export default function ThemeProvider({
         border border-black/10 dark:border-white/10 
         px-4 py-2 rounded-xl text-sm backdrop-blur-md"
       >
-        {theme === "dark" ? "☀️ Light" : "🌙 Dark"}
+        {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
       </button>
     </>
   );
