@@ -9,7 +9,7 @@ export default function Portfolio() {
       className="relative py-32 px-6 border-t border-black/10 dark:border-white/10 bg-white text-black dark:bg-[#0B0B0B] dark:text-white transition-colors"
     >
       {/* 🔥 Fondo decorativo */}
-      <div className="absolute inset-0 -z-10 pointer-events-none">
+      <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
         <div className="absolute left-0 top-0 w-[400px] h-[300px] bg-purple-500/10 blur-3xl" />
       </div>
 
@@ -24,11 +24,20 @@ export default function Portfolio() {
         <div className="grid md:grid-cols-2 gap-10">
 
           {/* 🔥 Proyecto real */}
-          <div className="group bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl overflow-hidden hover:scale-[1.03] transition-all duration-300 hover:shadow-xl">
+          <a
+            href="https://complejo-web.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl overflow-hidden hover:scale-[1.03] transition-all duration-300 hover:shadow-xl block"
+          >
 
-            {/* Imagen */}
-            <div className="h-48 bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center text-sm text-gray-500">
-              Vista previa del proyecto
+            {/* Imagen REAL */}
+            <div className="h-48 overflow-hidden">
+              <img
+                src="/image/p7.png"       
+                alt="Web de Cabañas preview"
+                className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+              />
             </div>
 
             <div className="p-6">
@@ -41,18 +50,23 @@ export default function Portfolio() {
                 Landing moderna para alquiler turístico en Calamuchita.
               </p>
 
-              {/* CTA */}
-              <a
-                href="#contact"
-                className="text-sm font-medium underline underline-offset-4 hover:opacity-70 transition"
-              >
-                Quiero algo similar
-              </a>
+              <div className="flex gap-4 items-center">
 
+                {/* Demo */}
+                <span className="text-sm font-medium underline underline-offset-4 group-hover:opacity-70 transition">
+                  Ver demo
+                </span>
+
+                {/* CTA */}
+                <span className="text-sm text-gray-500">
+                  • Quiero algo similar
+                </span>
+
+              </div>
             </div>
-          </div>
+          </a>
 
-          {/* 🔥 Placeholder con CTA */}
+          {/* 🔥 Placeholder */}
           <div className="group flex flex-col items-center justify-center text-center bg-black/5 dark:bg-white/5 border border-dashed border-black/20 dark:border-white/20 rounded-2xl p-10 hover:scale-[1.03] transition-all duration-300">
 
             <h3 className="text-xl font-semibold mb-2">
