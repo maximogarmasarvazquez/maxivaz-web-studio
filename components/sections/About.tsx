@@ -6,6 +6,7 @@ export default function About() {
   return (
     <section
       id="about"
+      aria-label="Sobre Maxivaz Web Studio"
       className="relative py-32 px-6 border-t border-black/10 dark:border-white/10 bg-white text-black dark:bg-[#0B0B0B] dark:text-white transition-colors"
     >
       {/* 🔥 Fondo decorativo */}
@@ -15,7 +16,7 @@ export default function About() {
 
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
 
-        {/* 🧠 Texto */}
+        {/* 🧠 TEXTO */}
         <div>
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 tracking-widest">
             SOBRE NOSOTROS
@@ -26,22 +27,21 @@ export default function About() {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">
               Córdoba
             </span>{" "}
-            para todo el país
+            para toda Argentina
           </h2>
 
           <p className="text-gray-600 dark:text-gray-400 mb-6">
-            Somos un estudio ubicado en Calamuchita, Córdoba. Trabajamos con
-            negocios de toda Argentina creando páginas modernas, rápidas y
-            orientadas a resultados reales.
+            Soy desarrollador web especializado en crear sitios modernos,
+            rápidos y optimizados para negocios que quieren crecer online.
           </p>
 
           <p className="text-gray-600 dark:text-gray-400">
-            No solo diseñamos sitios web: construimos herramientas pensadas para
-            atraer clientes y hacer crecer tu negocio.
+            No solo diseño páginas web: desarrollo experiencias digitales
+            enfocadas en conversión, rendimiento y posicionamiento en Google.
           </p>
         </div>
 
-        {/* 📍 Card */}
+        {/* 📍 CARD */}
         <div className="group bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl p-10 hover:border-black/20 dark:hover:border-white/30 transition-all duration-300 hover:scale-[1.03] hover:shadow-xl">
 
           <MapPin className="w-12 h-12 mb-6 text-blue-500 group-hover:scale-110 transition" />
@@ -51,8 +51,8 @@ export default function About() {
           </h3>
 
           <p className="text-gray-600 dark:text-gray-400">
-            Trabajo remoto para todo el país, adaptándonos a cada cliente y
-            proyecto.
+            Trabajo remoto para todo el país, desarrollando proyectos web
+            personalizados según cada negocio.
           </p>
 
         </div>

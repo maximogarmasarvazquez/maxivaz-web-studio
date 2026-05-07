@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import NavItem from "@/components/ui/NavItem";
 import {
   Home,
@@ -12,7 +12,7 @@ import {
   X,
 } from "lucide-react";
 
-const sections = ["hero", "services", "benefits", "portfolio", "contact"];
+const sections = ["hero", "services", "benefits", "portfolio", "contact"] as const;
 
 type SectionId = (typeof sections)[number];
 
@@ -20,26 +20,44 @@ export default function FloatingNav() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<SectionId>("hero");
 
-  // 🔥 SCROLL DETECTION (más estable)
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const indicatorRef = useRef<HTMLDivElement | null>(null);
+
+  // 🔥 SCROLL SPY OPTIMIZADO
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      const windowHeight = window.innerHeight;
+      if (ticking) return;
 
-      if (window.scrollY + windowHeight >= document.body.scrollHeight - 50) {
-        setActive("contact");
-        return;
-      }
+      ticking = true;
 
-      sections.forEach((id) => {
-        const el = document.getElementById(id);
-        if (!el) return;
+      requestAnimationFrame(() => {
+        const windowHeight = window.innerHeight;
+        const scrollMiddle = window.scrollY + windowHeight / 2;
 
-        const rect = el.getBoundingClientRect();
-        const trigger = windowHeight * 0.5;
-
-        if (rect.top <= trigger && rect.bottom >= trigger) {
-          setActive(id as SectionId);
+        if (
+          window.scrollY + windowHeight >=
+          document.body.scrollHeight - 50
+        ) {
+          setActive("contact");
+          ticking = false;
+          return;
         }
+
+        for (const id of sections) {
+          const el = document.getElementById(id);
+          if (!el) continue;
+
+          const top = el.offsetTop;
+          const bottom = top + el.offsetHeight;
+
+          if (scrollMiddle >= top && scrollMiddle <= bottom) {
+            setActive((prev) => (prev === id ? prev : id));
+          }
+        }
+
+        ticking = false;
       });
     };
 
@@ -49,23 +67,20 @@ export default function FloatingNav() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 🔥 INDICADOR ESTABLE (sin jitter)
+  // 🔥 INDICADOR MÁS ESTABLE
   useEffect(() => {
-    const container = document.getElementById("nav-container");
+    const container = containerRef.current;
     const activeEl = document.querySelector(
       `[data-nav="${active}"]`
     ) as HTMLElement | null;
-    const indicator = document.getElementById("nav-indicator");
+    const indicator = indicatorRef.current;
 
-    if (container && activeEl && indicator) {
-      const containerRect = container.getBoundingClientRect();
-      const activeRect = activeEl.getBoundingClientRect();
+    if (!container || !activeEl || !indicator) return;
 
-      const offset = activeRect.top - containerRect.top;
+    const offset = activeEl.offsetTop;
 
-      indicator.style.transform = `translate3d(0, ${offset}px, 0)`;
-      indicator.style.height = `${activeEl.offsetHeight}px`;
-    }
+    indicator.style.transform = `translate3d(0, ${offset}px, 0)`;
+    indicator.style.height = `${activeEl.offsetHeight}px`;
   }, [active]);
 
   return (
@@ -79,7 +94,7 @@ export default function FloatingNav() {
 
           {/* CONTAINER */}
           <div
-            id="nav-container"
+            ref={containerRef}
             className="
               relative z-20
               flex flex-col gap-6 px-4 py-6 rounded-3xl
@@ -93,20 +108,17 @@ export default function FloatingNav() {
           >
             {/* INDICADOR */}
             <div
-              id="nav-indicator"
+              ref={indicatorRef}
               className="
                 absolute left-2 right-2 rounded-2xl
                 bg-black/10 dark:bg-white/10
                 blur-md
                 pointer-events-none z-10 top-0
-
                 transition-transform duration-300 ease-out
                 will-change-transform
               "
-              style={{ transform: "translate3d(0,0,0)" }}
             />
 
-            {/* ITEMS */}
             <div className="relative z-20" data-nav="hero">
               <NavItem href="#hero" icon={<Home className="w-5 h-5" />} label="Inicio" isActive={active === "hero"} />
             </div>

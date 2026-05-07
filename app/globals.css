@@ -2,11 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 🔥 Smooth transitions globales */
 html {
   scroll-behavior: smooth;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* 🔥 FIX REAL DEL PROBLEMA */
+/* 🔥 FIX overflow horizontal */
 html,
 body {
   width: 100%;
@@ -14,12 +16,19 @@ body {
   overflow-x: hidden;
 }
 
+/* 🔥 Base theme */
 body {
   @apply bg-white text-black dark:bg-[#0B0B0B] dark:text-white;
 }
 
-/* opcional */
+/* 🔥 Mejora UX selección */
 ::selection {
   background: #a855f7;
   color: white;
+}
+
+/* 🔥 Mejora accesibilidad (opcional pero recomendado) */
+:focus-visible {
+  outline: 2px solid #a855f7;
+  outline-offset: 2px;
 }
