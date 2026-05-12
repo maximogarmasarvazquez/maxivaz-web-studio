@@ -9,7 +9,7 @@ export default function Hero() {
       aria-label="Sección principal de presentación"
       className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden bg-white text-black dark:bg-[#0B0B0B] dark:text-white transition-colors"
     >
-      {/* 🔥 Fondo decorativo */}
+      {/* Fondo decorativo */}
       <div className="absolute inset-0 -z-10 pointer-events-none">
 
         {/* Glow */}
@@ -19,31 +19,39 @@ export default function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/5 dark:to-black/40" />
       </div>
 
-      <div className="max-w-4xl text-center">
+      <div className="max-w-5xl text-center">
 
-        {/* 🧠 Marca (SEO: identidad del sitio) */}
-        <p className="text-sm tracking-widest text-gray-500 dark:text-gray-400 mb-4">
-          MAXIVAZ WEB STUDIO
+        {/* Marca */}
+        <p className="text-sm tracking-[0.3em] uppercase text-gray-500 dark:text-gray-400 mb-4">
+          Maxivaz Web Studio
         </p>
 
-        {/* 🧠 H1 (SEO IMPORTANTE) */}
+        {/* H1 SEO */}
         <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
-          Creamos páginas web que{" "}
+          Desarrollo Web Profesional en{" "}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500">
-            convierten visitas en clientes
+            Calamuchita y Córdoba
           </span>
         </h1>
 
-        {/* 🧠 Descripción (SEO: keyword + contexto) */}
-        <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-          Desarrollo web moderno en Argentina. Landing pages y sitios rápidos
-          optimizados para SEO y conversión de clientes.
+        {/* Subtítulo */}
+        <h2 className="text-xl md:text-2xl font-medium text-gray-700 dark:text-gray-200 mb-6">
+          Creamos páginas web modernas, tiendas online y sistemas
+          personalizados para negocios y emprendimientos.
+        </h2>
+
+        {/* Texto SEO */}
+        <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+          Ayudamos a negocios de Villa General Belgrano, Santa Rosa de
+          Calamuchita y Córdoba a tener una presencia online profesional
+          mediante sitios web rápidos, optimizados para Google y diseñados
+          para convertir visitas en clientes.
         </p>
 
         {/* CTA */}
         <div className="flex flex-col md:flex-row gap-4 justify-center">
 
-          {/* WhatsApp externo */}
+          {/* WhatsApp */}
           <a
             href="https://wa.me/5493546431626"
             target="_blank"
@@ -54,7 +62,7 @@ export default function Hero() {
             Hablemos por WhatsApp
           </a>
 
-          {/* Navegación interna */}
+          {/* Portfolio */}
           <Link
             href="#portfolio"
             aria-label="Ver trabajos realizados"
@@ -63,6 +71,13 @@ export default function Hero() {
             Ver trabajos
           </Link>
 
+        </div>
+
+        {/* Keywords locales ocultas suavemente para contexto semántico */}
+        <div className="sr-only">
+          desarrollo web en calamuchita, paginas web villa general belgrano,
+          diseño web cordoba, ecommerce argentina, desarrollador web freelance,
+          desarrollo web santa rosa de calamuchita
         </div>
 
       </div>

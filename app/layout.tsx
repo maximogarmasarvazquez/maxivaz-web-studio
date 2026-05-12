@@ -4,33 +4,82 @@ import ThemeProvider from "@/components/theme/ThemeProvider";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Maxivaz Web Studio | Desarrollo Web Profesional",
+  metadataBase: new URL("https://maxivaz.com.ar"),
+
+  title: {
+    default: "Maxivaz Web Studio | Desarrollo Web en Calamuchita",
+    template: "%s | Maxivaz Web Studio",
+  },
+
   description:
-    "Creamos páginas web modernas, rápidas y optimizadas para convertir visitas en clientes. Desarrollo web en Córdoba, Argentina.",
+    "Desarrollo de páginas web modernas y optimizadas para negocios en Calamuchita, Villa General Belgrano, Santa Rosa y Córdoba. Sitios web rápidos, ecommerce y sistemas personalizados.",
+
   keywords: [
-    "desarrollo web",
-    "landing pages",
-    "react developer",
-    "next js",
-    "diseño web argentina",
-    "freelance web developer",
+    "desarrollo web calamuchita",
+    "paginas web calamuchita",
+    "desarrollo web villa general belgrano",
+    "paginas web villa general belgrano",
+    "desarrollo web santa rosa de calamuchita",
+    "diseño web cordoba",
+    "creacion de paginas web argentina",
+    "desarrollador web freelance",
+    "react developer argentina",
+    "next js developer",
+    "ecommerce cordoba",
+    "tiendas online cordoba",
+    "maxivaz web studio",
+    "maximo garmasar vazquez",
   ],
-  authors: [{ name: "Maxivaz Web Studio" }],
-  creator: "Maxivaz",
+
+  authors: [
+    {
+      name: "Maximo Garmasar Vazquez",
+      url: "https://maxivaz.com.ar",
+    },
+  ],
+
+  creator: "Maximo Garmasar Vazquez",
+  publisher: "Maxivaz Web Studio",
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+
+  alternates: {
+    canonical: "https://maxivaz.com.ar",
+  },
+
   openGraph: {
-    title: "Maxivaz Web Studio",
+    title: "Maxivaz Web Studio | Desarrollo Web en Calamuchita",
+
     description:
-      "Desarrollo web moderno, rápido y optimizado para negocios.",
-    url: "https://tu-dominio.com",
+      "Creamos páginas web modernas, rápidas y optimizadas para negocios y emprendimientos en Calamuchita y Córdoba.",
+
+    url: "https://maxivaz.com.ar",
+
     siteName: "Maxivaz Web Studio",
+
+    locale: "es_AR",
+
     type: "website",
   },
+
   twitter: {
     card: "summary_large_image",
-    title: "Maxivaz Web Studio",
-    description: "Desarrollo web moderno y profesional",
+
+    title: "Maxivaz Web Studio | Desarrollo Web",
+
+    description:
+      "Páginas web modernas y optimizadas para negocios en Calamuchita y Córdoba.",
   },
-  metadataBase: new URL("https://tu-dominio.com"),
 };
 
 export default function RootLayout({
@@ -43,7 +92,9 @@ export default function RootLayout({
       <body className="overflow-x-hidden bg-white text-black dark:bg-[#0B0B0B] dark:text-white transition-colors duration-300">
         <ThemeProvider>
           <FloatingNav />
-          <main className="w-full overflow-x-hidden">{children}</main>
+          <main className="w-full overflow-x-hidden">
+            {children}
+          </main>
         </ThemeProvider>
       </body>
     </html>
