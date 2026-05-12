@@ -1,5 +1,3 @@
-// app/page.tsx
-
 import type { Metadata } from "next";
 
 import Hero from "@/components/sections/Hero";
@@ -12,29 +10,35 @@ import About from "@/components/sections/About";
 
 export const metadata: Metadata = {
   title:
-    "Desarrollo Web en Calamuchita | Maximo Garmasar Vazquez",
+    "Desarrollo Web en Calamuchita y Córdoba",
+
   description:
-    "Desarrollo de páginas web profesionales en Calamuchita, Villa General Belgrano y Córdoba. Diseño web moderno, tiendas online y sistemas personalizados para negocios y emprendimientos.",
+    "Diseño y desarrollo de páginas web modernas, ecommerce y sistemas personalizados para negocios en Villa General Belgrano, Santa Rosa de Calamuchita y Córdoba.",
+
   keywords: [
     "desarrollo web calamuchita",
-    "paginas web calamuchita",
-    "desarrollo web villa general belgrano",
-    "diseño web cordoba",
-    "desarrollador web freelance argentina",
-    "creacion de paginas web",
-    "tiendas online cordoba",
+    "paginas web villa general belgrano",
+    "desarrollo web cordoba",
+    "diseño web argentina",
+    "ecommerce cordoba",
+    "desarrollador web freelance",
     "react developer argentina",
     "next js developer",
-    "maximo garmasar vazquez",
   ],
+
   openGraph: {
     title:
-      "Desarrollo Web en Calamuchita | Maximo Garmasar Vazquez",
+      "Desarrollo Web en Calamuchita y Córdoba | Maxivaz Web Studio",
+
     description:
-      "Páginas web modernas, rápidas y optimizadas para negocios y emprendimientos en Calamuchita y Córdoba.",
+      "Páginas web modernas, rápidas y optimizadas para negocios y emprendimientos.",
+
     url: "https://maxivaz.com.ar",
-    siteName: "Maxivaz",
+
+    siteName: "Maxivaz Web Studio",
+
     locale: "es_AR",
+
     type: "website",
   },
 };

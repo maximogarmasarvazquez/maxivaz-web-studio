@@ -7,28 +7,20 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://maxivaz.com.ar"),
 
   title: {
-    default: "Maxivaz Web Studio | Desarrollo Web en Calamuchita",
+    default: "Maxivaz Web Studio",
     template: "%s | Maxivaz Web Studio",
   },
 
   description:
-    "Desarrollo de páginas web modernas y optimizadas para negocios en Calamuchita, Villa General Belgrano, Santa Rosa y Córdoba. Sitios web rápidos, ecommerce y sistemas personalizados.",
+    "Desarrollo web profesional en Calamuchita y Córdoba. Creamos páginas web modernas, rápidas y optimizadas para negocios y emprendimientos.",
 
   keywords: [
     "desarrollo web calamuchita",
-    "paginas web calamuchita",
-    "desarrollo web villa general belgrano",
-    "paginas web villa general belgrano",
-    "desarrollo web santa rosa de calamuchita",
-    "diseño web cordoba",
-    "creacion de paginas web argentina",
-    "desarrollador web freelance",
-    "react developer argentina",
+    "paginas web cordoba",
+    "desarrollo web argentina",
+    "react developer",
     "next js developer",
-    "ecommerce cordoba",
-    "tiendas online cordoba",
     "maxivaz web studio",
-    "maximo garmasar vazquez",
   ],
 
   authors: [
@@ -39,18 +31,12 @@ export const metadata: Metadata = {
   ],
 
   creator: "Maximo Garmasar Vazquez",
+
   publisher: "Maxivaz Web Studio",
 
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-      "max-video-preview": -1,
-    },
   },
 
   alternates: {
@@ -58,10 +44,10 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: "Maxivaz Web Studio | Desarrollo Web en Calamuchita",
+    title: "Maxivaz Web Studio",
 
     description:
-      "Creamos páginas web modernas, rápidas y optimizadas para negocios y emprendimientos en Calamuchita y Córdoba.",
+      "Páginas web modernas y optimizadas para negocios en Calamuchita y Córdoba.",
 
     url: "https://maxivaz.com.ar",
 
@@ -75,10 +61,10 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
 
-    title: "Maxivaz Web Studio | Desarrollo Web",
+    title: "Maxivaz Web Studio",
 
     description:
-      "Páginas web modernas y optimizadas para negocios en Calamuchita y Córdoba.",
+      "Desarrollo web moderno y profesional en Córdoba y Calamuchita.",
   },
 };
 
