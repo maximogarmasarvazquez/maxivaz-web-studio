@@ -3,37 +3,30 @@
 export default function CTA() {
   return (
     <section
-      aria-label="Llamado a la acción desarrollo web"
-      className="relative py-32 px-6 text-center bg-white text-black dark:bg-[#0B0B0B] dark:text-white transition-colors overflow-hidden"
+      className="
+        relative py-28 px-6 text-center
+        bg-white dark:bg-[#0B0B0B]
+      "
     >
-      {/* Fondo decorativo */}
-      <div className="absolute inset-0 -z-10 pointer-events-none">
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[250px] bg-purple-500/10 blur-3xl" />
-      </div>
-
       <div className="max-w-4xl mx-auto">
 
-        <p className="text-sm tracking-widest text-gray-500 dark:text-gray-400 mb-4">
-          DESARROLLO WEB PROFESIONAL
-        </p>
-
-        <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">
-          Tu negocio merece una presencia digital{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500">
-            que convierta visitas en clientes
-          </span>
+        <h2 className="text-3xl md:text-5xl font-bold mb-6">
+          Tu negocio merece una web que convierta
         </h2>
 
-        <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-          Diseño y desarrollo de páginas web modernas, rápidas y optimizadas para SEO que ayudan a crecer negocios en Argentina.
+        <p className="text-gray-600 dark:text-gray-400 mb-8">
+          Diseño y desarrollo web moderno optimizado para crecer tu marca en internet.
         </p>
 
         <a
           href="https://wa.me/5493546431626"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Solicitar presupuesto por WhatsApp"
-          className="inline-block bg-black text-white dark:bg-white dark:text-black px-8 py-4 rounded-xl font-medium hover:scale-105 transition"
+          className="
+            inline-block px-8 py-4 rounded-xl
+            bg-black text-white
+            dark:bg-white dark:text-black
+            font-medium
+            hover:opacity-90 transition
+          "
         >
           Solicitar presupuesto
         </a>

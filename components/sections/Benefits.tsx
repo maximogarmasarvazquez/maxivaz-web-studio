@@ -2,87 +2,74 @@
 
 import { Zap, Smartphone, Palette, TrendingUp } from "lucide-react";
 
+const items = [
+  {
+    icon: Zap,
+    title: "Velocidad optimizada para SEO",
+    desc: "Sitios rápidos que mejoran posicionamiento y reducen rebote.",
+    color: "text-yellow-500",
+  },
+  {
+    icon: Smartphone,
+    title: "Diseño responsive profesional",
+    desc: "Adaptación perfecta a todos los dispositivos sin perder calidad.",
+    color: "text-blue-500",
+  },
+  {
+    icon: Palette,
+    title: "Diseño moderno y atractivo",
+    desc: "Interfaces limpias que transmiten confianza y profesionalismo.",
+    color: "text-purple-500",
+  },
+  {
+    icon: TrendingUp,
+    title: "Enfoque en conversión",
+    desc: "Cada sección optimizada para generar clientes reales.",
+    color: "text-green-500",
+  },
+];
+
 export default function Benefits() {
   return (
     <section
       id="benefits"
-      aria-label="Beneficios de desarrollo web profesional"
-      className="relative py-32 px-6 border-t border-black/10 dark:border-white/10 bg-white text-black dark:bg-[#0B0B0B] dark:text-white transition-colors"
+      className="
+        relative py-28 px-6
+        border-t border-black/10 dark:border-white/10
+        bg-white dark:bg-[#0B0B0B]
+        text-black dark:text-white
+      "
     >
-      {/* 🔥 Fondo decorativo */}
-      <div className="absolute inset-0 -z-10 pointer-events-none">
-        <div className="absolute left-0 bottom-0 w-[400px] h-[300px] bg-purple-500/10 blur-3xl" />
-      </div>
-
       <div className="max-w-6xl mx-auto">
 
-        {/* Título SEO optimizado */}
-        <h2 className="text-3xl md:text-4xl font-bold mb-16 text-center">
-          Beneficios de tener una web profesional
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-14">
+          Beneficios de una web profesional
         </h2>
 
-        {/* Grid */}
-        <div className="grid md:grid-cols-2 gap-10">
+        <div className="grid md:grid-cols-2 gap-8">
 
-          {/* Card 1 */}
-          <div className="group bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl p-8 hover:border-black/20 dark:hover:border-white/30 transition-all duration-300 hover:scale-[1.03] hover:shadow-xl">
+          {items.map((item, i) => (
+            <article
+              key={i}
+              className="
+                group p-7 rounded-2xl
+                bg-black/5 dark:bg-white/5
+                border border-black/10 dark:border-white/10
+                hover:border-black/20 dark:hover:border-white/20
+                transition-all duration-300
+              "
+            >
+              <item.icon className={`w-9 h-9 mb-5 ${item.color}`} />
 
-            <Zap className="w-10 h-10 mb-6 text-yellow-500 group-hover:scale-110 transition" />
+              <h3 className="text-lg font-semibold mb-2">
+                {item.title}
+              </h3>
 
-            <h3 className="text-xl font-semibold mb-3">
-              Velocidad optimizada para SEO
-            </h3>
-
-            <p className="text-gray-600 dark:text-gray-400">
-              Sitios rápidos que mejoran el posicionamiento en Google y reducen la tasa de rebote de los usuarios.
-            </p>
-
-          </div>
-
-          {/* Card 2 */}
-          <div className="group bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl p-8 hover:border-black/20 dark:hover:border-white/30 transition-all duration-300 hover:scale-[1.03] hover:shadow-xl">
-
-            <Smartphone className="w-10 h-10 mb-6 text-blue-500 group-hover:scale-110 transition" />
-
-            <h3 className="text-xl font-semibold mb-3">
-              Diseño responsive profesional
-            </h3>
-
-            <p className="text-gray-600 dark:text-gray-400">
-              Tu web se adapta perfectamente a celulares, tablets y computadoras para no perder clientes.
-            </p>
-
-          </div>
-
-          {/* Card 3 */}
-          <div className="group bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl p-8 hover:border-black/20 dark:hover:border-white/30 transition-all duration-300 hover:scale-[1.03] hover:shadow-xl">
-
-            <Palette className="w-10 h-10 mb-6 text-purple-500 group-hover:scale-110 transition" />
-
-            <h3 className="text-xl font-semibold mb-3">
-              Diseño moderno y atractivo
-            </h3>
-
-            <p className="text-gray-600 dark:text-gray-400">
-              Interfaces pensadas para generar confianza, profesionalismo y mejorar la percepción de tu marca.
-            </p>
-
-          </div>
-
-          {/* Card 4 */}
-          <div className="group bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl p-8 hover:border-black/20 dark:hover:border-white/30 transition-all duration-300 hover:scale-[1.03] hover:shadow-xl">
-
-            <TrendingUp className="w-10 h-10 mb-6 text-green-500 group-hover:scale-110 transition" />
-
-            <h3 className="text-xl font-semibold mb-3">
-              Enfoque en conversión de clientes
-            </h3>
-
-            <p className="text-gray-600 dark:text-gray-400">
-              Cada sección está optimizada para transformar visitas en consultas o ventas reales.
-            </p>
-
-          </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                {item.desc}
+              </p>
+            </article>
+          ))}
 
         </div>
       </div>

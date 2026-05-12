@@ -7,64 +7,44 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://maxivaz.com.ar"),
 
   title: {
-    default: "Maxivaz Web Studio",
+    default:
+      "Páginas Web que Consiguen Clientes en Calamuchita y Córdoba | Maxivaz",
     template: "%s | Maxivaz Web Studio",
   },
 
   description:
-    "Desarrollo web profesional en Calamuchita y Córdoba. Creamos páginas web modernas, rápidas y optimizadas para negocios y emprendimientos.",
-
-  keywords: [
-    "desarrollo web calamuchita",
-    "paginas web cordoba",
-    "desarrollo web argentina",
-    "react developer",
-    "next js developer",
-    "maxivaz web studio",
-  ],
-
-  authors: [
-    {
-      name: "Maximo Garmasar Vazquez",
-      url: "https://maxivaz.com.ar",
-    },
-  ],
-
-  creator: "Maximo Garmasar Vazquez",
-
-  publisher: "Maxivaz Web Studio",
-
-  robots: {
-    index: true,
-    follow: true,
-  },
-
-  alternates: {
-    canonical: "https://maxivaz.com.ar",
-  },
+    "Desarrollo de páginas web modernas en Calamuchita y Córdoba enfocadas en atraer clientes, mejorar ventas y posicionar negocios online.",
 
   openGraph: {
-    title: "Maxivaz Web Studio",
+    title:
+      "Páginas Web en Calamuchita y Córdoba que Generan Clientes | Maxivaz Web Studio",
 
     description:
-      "Páginas web modernas y optimizadas para negocios en Calamuchita y Córdoba.",
+      "Sitios web rápidos, modernos y optimizados para negocios y emprendimientos.",
 
     url: "https://maxivaz.com.ar",
 
     siteName: "Maxivaz Web Studio",
 
-    locale: "es_AR",
-
     type: "website",
+
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Maxivaz Web Studio - Desarrollo web en Calamuchita y Córdoba",
+      },
+    ],
   },
 
   twitter: {
     card: "summary_large_image",
-
-    title: "Maxivaz Web Studio",
-
+    title:
+      "Páginas Web que Consiguen Clientes en Córdoba | Maxivaz Web Studio",
     description:
-      "Desarrollo web moderno y profesional en Córdoba y Calamuchita.",
+      "Desarrollo web profesional enfocado en resultados para negocios locales.",
+    images: ["/og-image.jpg"],
   },
 };
 
@@ -75,12 +55,56 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className="overflow-x-hidden bg-white text-black dark:bg-[#0B0B0B] dark:text-white transition-colors duration-300">
+      <body className="overflow-x-hidden bg-white text-black dark:bg-[#0B0B0B] dark:text-white transition-colors duration-300 scroll-smooth">
+
+        {/* 🔥 JSON-LD SEO LOCAL MEJORADO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              name: "Maxivaz Web Studio",
+              url: "https://maxivaz.com.ar",
+              image: "https://maxivaz.com.ar/og-image.jpg",
+
+              description:
+                "Creamos páginas web en Calamuchita y Córdoba enfocadas en atraer clientes y aumentar ventas.",
+
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Calamuchita",
+                addressRegion: "Córdoba",
+                addressCountry: "AR",
+              },
+
+              areaServed: [
+                "Calamuchita",
+                "Villa General Belgrano",
+                "Santa Rosa de Calamuchita",
+                "Córdoba",
+                "Argentina",
+              ],
+
+              founder: {
+                "@type": "Person",
+                name: "Maximo Garmasar Vazquez",
+              },
+
+              sameAs: [
+                "https://github.com/maximogarmasarvazquez",
+                "https://www.linkedin.com/in/maximogarmasarvazquez/",
+              ],
+
+              priceRange: "$$",
+              serviceType: "Desarrollo Web",
+            }),
+          }}
+        />
+
         <ThemeProvider>
           <FloatingNav />
-          <main className="w-full overflow-x-hidden">
-            {children}
-          </main>
+          <main className="w-full overflow-x-hidden">{children}</main>
         </ThemeProvider>
       </body>
     </html>

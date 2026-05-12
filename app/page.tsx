@@ -10,28 +10,29 @@ import About from "@/components/sections/About";
 
 export const metadata: Metadata = {
   title:
-    "Desarrollo Web en Calamuchita y Córdoba",
+    "Páginas Web en Calamuchita y Córdoba que Consiguen Clientes | Maxivaz Web Studio",
 
   description:
-    "Diseño y desarrollo de páginas web modernas, ecommerce y sistemas personalizados para negocios en Villa General Belgrano, Santa Rosa de Calamuchita y Córdoba.",
+    "Creamos páginas web profesionales en Calamuchita y Córdoba diseñadas para atraer clientes, vender más y mejorar la presencia online de tu negocio.",
 
   keywords: [
-    "desarrollo web calamuchita",
-    "paginas web villa general belgrano",
-    "desarrollo web cordoba",
-    "diseño web argentina",
+    "pagina web calamuchita",
+    "pagina web villa general belgrano",
+    "diseño web cordoba",
+    "desarrollo web argentina",
+    "web para negocios",
+    "pagina web que vende",
     "ecommerce cordoba",
-    "desarrollador web freelance",
     "react developer argentina",
     "next js developer",
   ],
 
   openGraph: {
     title:
-      "Desarrollo Web en Calamuchita y Córdoba | Maxivaz Web Studio",
+      "Páginas Web en Calamuchita y Córdoba que Atraen Clientes | Maxivaz",
 
     description:
-      "Páginas web modernas, rápidas y optimizadas para negocios y emprendimientos.",
+      "Diseño y desarrollo de sitios web modernos enfocados en ventas y crecimiento de negocios locales.",
 
     url: "https://maxivaz.com.ar",
 
