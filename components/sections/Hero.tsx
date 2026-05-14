@@ -1,127 +1,275 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import LiquidBackground from "../background/LiquidBackground";
+import { useTheme } from "@/context/themeContext";
+
+type Ripple = {
+  id: number;
+  x: number;
+  y: number;
+};
+
+type PaintParticle = {
+  id: string;
+  x: number;
+  y: number;
+  size: number;
+  opacity: number;
+  blur: number;
+};
 
 export default function Hero() {
+  const { isDark } = useTheme();
+
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  const [isMobile, setIsMobile] = useState(false);
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
+
+  const [ripples, setRipples] = useState<Ripple[]>([]);
+  const [particles, setParticles] = useState<PaintParticle[]>([]);
+
+  const isPaintingRef = useRef(false);
+
+  // ================= MOBILE CHECK =================
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+    };
+  }, []);
+
+  // ================= MOUSE + EFFECTS =================
+  useEffect(() => {
+    if (isMobile) return;
+
+    let lastSpawn = 0;
+
+    const handleMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 50;
+      const y = (e.clientY / window.innerHeight - 0.5) * 50;
+
+      setMouse({ x, y });
+
+      // PAINT TRAIL
+      if (!isPaintingRef.current) return;
+
+      const now = performance.now();
+      if (now - lastSpawn < 16) return;
+
+      lastSpawn = now;
+
+      if (!sectionRef.current) return;
+
+      const rect = sectionRef.current.getBoundingClientRect();
+
+      const centerX = e.clientX - rect.left;
+      const centerY = e.clientY - rect.top;
+
+      const newParticles: PaintParticle[] = Array.from({
+        length: 5,
+      }).map((_, i) => ({
+        id: `${now}-${i}-${Math.random()}`,
+        x: centerX + (Math.random() - 0.5) * 80,
+        y: centerY + (Math.random() - 0.5) * 80,
+        size: Math.random() * 40 + 18,
+        opacity: Math.random() * 0.35 + 0.08,
+        blur: Math.random() * 20 + 8,
+      }));
+
+      setParticles((prev) => [
+        ...prev.slice(-240),
+        ...newParticles,
+      ]);
+
+      newParticles.forEach((particle) => {
+        setTimeout(() => {
+          setParticles((prev) =>
+            prev.filter((p) => p.id !== particle.id)
+          );
+        }, 2200);
+      });
+    };
+
+    const handleClick = (e: MouseEvent) => {
+      if (!sectionRef.current) return;
+
+      const rect = sectionRef.current.getBoundingClientRect();
+
+      const id = performance.now();
+
+      setRipples((prev) => [
+        ...prev.slice(-5),
+        {
+          id,
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top,
+        },
+      ]);
+
+      setTimeout(() => {
+        setRipples((prev) =>
+          prev.filter((r) => r.id !== id)
+        );
+      }, 2200);
+    };
+
+    const handleMouseDown = () => {
+      isPaintingRef.current = true;
+    };
+
+    const handleMouseUp = () => {
+      isPaintingRef.current = false;
+    };
+
+    window.addEventListener("mousemove", handleMove);
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener("click", handleClick);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMove);
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("click", handleClick);
+    };
+  }, [isMobile]);
+
+  // ================= RENDER =================
   return (
     <section
+      ref={sectionRef}
       id="hero"
-      aria-label="Sección principal de presentación"
-      className="
-        relative min-h-screen flex items-center justify-center
-        px-6 py-24 md:py-0
-        overflow-hidden
-        bg-white text-black dark:bg-[#0B0B0B] dark:text-white
-        transition-colors
-        scroll-mt-28
-      "
+      className="relative isolate min-h-screen overflow-hidden transition-colors duration-500"
     >
-      {/* Fondo decorativo */}
-      <div className="absolute inset-0 -z-10 pointer-events-none">
+      <LiquidBackground
+        mouse={mouse}
+        particles={particles}
+        isDark={isDark}
+      />
 
-        <div className="
-          absolute top-[-140px] left-1/2 -translate-x-1/2
-          w-[420px] md:w-[500px]
-          h-[260px] md:h-[300px]
-          bg-purple-500/20 blur-3xl
-        " />
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 text-center text-black dark:text-white">
 
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/5 dark:to-black/40" />
-      </div>
+        {/* BADGE */}
+        <div
+          className={`mb-10 inline-flex items-center gap-2 rounded-full border px-5 py-2.5 backdrop-blur-2xl shadow-lg ${
+            isDark
+              ? "border-white/10 bg-white/[0.04]"
+              : "border-blue-200/60 bg-white/30 shadow-blue-500/10"
+          }`}
+        >
+          <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+          <span className={`text-[11px] font-medium uppercase tracking-[0.35em] ${
+            isDark ? "text-zinc-400" : "text-blue-950/70"
+          }`}>
+            Maxivaz Web Studio
+          </span>
+        </div>
 
-      <div className="max-w-5xl text-center">
+        {/* TITLE */}
+        <h1 className="max-w-6xl text-5xl font-black leading-[0.92] tracking-[-0.04em] sm:text-6xl md:text-7xl lg:text-[96px]">
+          <span className={isDark ? "text-white" : "text-[#050816]"}>
+            Desarrollo web
+          </span>
 
-        {/* 🟣 Brand */}
-        <p className="
-          text-xs md:text-sm
-          tracking-[0.3em] uppercase
-          text-gray-500 dark:text-gray-400
-          mb-6 md:mb-4
-        ">
-          Maxivaz Web Studio
-        </p>
-
-        {/* 🧠 H1 */}
-        <h1 className="
-          text-3xl sm:text-4xl md:text-6xl
-          font-bold leading-tight
-          mb-6 md:mb-6
-        ">
-          Desarrollo Web Profesional en{" "}
-          <span className="
-            text-transparent bg-clip-text
-            bg-gradient-to-r from-purple-500 to-blue-500
-          ">
-            Calamuchita y Córdoba
+          <span
+            className={`mt-2 block leading-tight pb-2 bg-gradient-to-r bg-clip-text text-transparent ${
+              isDark
+                ? "from-violet-400 via-fuchsia-500 to-cyan-400"
+                : "from-fuchsia-500 via-violet-400 to-cyan-400"
+            }`}
+          >
+            & Arte digital
           </span>
         </h1>
 
-        {/* 🧠 Subtitulo */}
-        <h2 className="
-          text-lg sm:text-xl md:text-2xl
-          font-medium
-          text-gray-700 dark:text-gray-200
-          mb-6 md:mb-6
-        ">
-          Creamos páginas web modernas, tiendas online y sistemas personalizados
-        </h2>
-
-        {/* 🧠 Texto SEO */}
-        <p className="
-          text-base md:text-lg
-          text-gray-600 dark:text-gray-300
-          mb-10 md:mb-8
-          max-w-2xl md:max-w-3xl
-          mx-auto
-          leading-relaxed
-        ">
-          Ayudamos a negocios de Villa General Belgrano, Santa Rosa de Calamuchita y Córdoba
-          a tener una presencia online profesional optimizada para Google y conversión.
+        {/* DESCRIPTION */}
+        <p className={`mt-10 max-w-3xl text-base leading-relaxed sm:text-lg md:text-[22px] ${
+          isDark ? "text-zinc-300" : "text-slate-700"
+        }`}>
+          Creamos experiencias visuales personalizadas de alto impacto, diseñadas para cautivar a tu audiencia.
         </p>
-
-        {/* CTA */}
-        <div className="
-          flex flex-col sm:flex-row
-          gap-4
-          justify-center
-          w-full
-        ">
-
+   {/* BUTTONS */}
+        <div className="mt-14 flex flex-col gap-4 sm:flex-row">
           <a
             href="https://wa.me/5493546431626"
             target="_blank"
-            rel="noopener noreferrer"
-            className="
-              bg-black text-white dark:bg-white dark:text-black
-              px-6 py-3 rounded-xl font-medium
-              hover:scale-[1.03] active:scale-95
-              transition
-            "
+            className={`
+              group relative overflow-hidden
+              rounded-2xl
+              px-9 py-4
+              font-semibold
+              transition-all duration-300
+              hover:scale-[1.04]
+              ${
+                isDark
+                  ? `
+                    bg-white
+                    text-black
+                  `
+                  : `
+                    bg-[#050816]
+                    text-white
+                    shadow-[0_10px_40px_rgba(37,99,235,0.25)]
+                  `
+              }
+            `}
           >
-            Hablemos por WhatsApp
+            <span className="relative z-10">
+              WhatsApp
+            </span>
+
+            <div
+              className="
+                absolute inset-0
+                translate-y-full
+                bg-gradient-to-r
+                from-blue-600
+                via-indigo-500
+                to-violet-500
+                transition-transform duration-500
+                group-hover:translate-y-0
+              "
+            />
           </a>
 
           <Link
             href="#portfolio"
-            className="
-              border border-black/20 dark:border-white/20
-              px-6 py-3 rounded-xl
-              hover:bg-black hover:text-white
-              dark:hover:bg-white dark:hover:text-black
-              transition
-            "
+            className={`
+              rounded-2xl
+              px-9 py-4
+              font-medium
+              transition-all duration-300
+              backdrop-blur-xl
+              hover:scale-[1.03]
+              ${
+                isDark
+                  ? `
+                    border border-white/10
+                    hover:bg-white
+                    hover:text-black
+                  `
+                  : `
+                    border border-blue-200/60
+                    bg-white/35
+                    text-slate-900
+                    shadow-lg shadow-blue-500/5
+                    hover:bg-white/70
+                  `
+              }
+            `}
           >
             Ver trabajos
           </Link>
-
         </div>
-
-        {/* SEO hidden */}
-        <div className="sr-only">
-          desarrollo web en calamuchita, paginas web villa general belgrano,
-          diseño web cordoba, ecommerce argentina, desarrollador web freelance
-        </div>
-
       </div>
     </section>
   );

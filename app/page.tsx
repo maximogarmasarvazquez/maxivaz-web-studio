@@ -8,6 +8,8 @@ import Contact from "@/components/sections/Contact";
 import CTA from "@/components/sections/CTA";
 import About from "@/components/sections/About";
 
+import PageTransition from "@/components/pageTransition";
+
 export const metadata: Metadata = {
   title:
     "Páginas Web en Calamuchita y Córdoba que Consiguen Clientes | Maxivaz Web Studio",
@@ -46,7 +48,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <>
+    <PageTransition>
       <Hero />
       <About />
       <Services />
@@ -54,6 +56,6 @@ export default function Home() {
       <Portfolio />
       <CTA />
       <Contact />
-    </>
+    </PageTransition>
   );
 }

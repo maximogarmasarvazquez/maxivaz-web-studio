@@ -1,6 +1,7 @@
 import "./globals.css";
 import FloatingNav from "@/components/layout/FloatingNav";
-import ThemeProvider from "@/components/theme/ThemeProvider";
+import { ThemeProvider } from "@/context/themeContext";
+import ThemeToggle from "@/components/theme/ThemeToggle";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -18,16 +19,11 @@ export const metadata: Metadata = {
   openGraph: {
     title:
       "Páginas Web en Calamuchita y Córdoba que Generan Clientes | Maxivaz Web Studio",
-
     description:
       "Sitios web rápidos, modernos y optimizados para negocios y emprendimientos.",
-
     url: "https://maxivaz.com.ar",
-
     siteName: "Maxivaz Web Studio",
-
     type: "website",
-
     images: [
       {
         url: "/og-image.jpg",
@@ -54,10 +50,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
-      <body className="overflow-x-hidden bg-white text-black dark:bg-[#0B0B0B] dark:text-white transition-colors duration-300 scroll-smooth">
-
-        {/* 🔥 JSON-LD SEO LOCAL MEJORADO */}
+<html lang="es" suppressHydrationWarning>
+        <body
+        className="
+          overflow-x-hidden
+          bg-white text-black
+          dark:bg-[#0B0B0B] dark:text-white
+          transition-colors duration-300
+          scroll-smooth
+        "
+      >
+        {/* SEO LOCAL */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -67,17 +70,14 @@ export default function RootLayout({
               name: "Maxivaz Web Studio",
               url: "https://maxivaz.com.ar",
               image: "https://maxivaz.com.ar/og-image.jpg",
-
               description:
                 "Creamos páginas web en Calamuchita y Córdoba enfocadas en atraer clientes y aumentar ventas.",
-
               address: {
                 "@type": "PostalAddress",
                 addressLocality: "Calamuchita",
                 addressRegion: "Córdoba",
                 addressCountry: "AR",
               },
-
               areaServed: [
                 "Calamuchita",
                 "Villa General Belgrano",
@@ -85,26 +85,30 @@ export default function RootLayout({
                 "Córdoba",
                 "Argentina",
               ],
-
               founder: {
                 "@type": "Person",
                 name: "Maximo Garmasar Vazquez",
               },
-
               sameAs: [
                 "https://github.com/maximogarmasarvazquez",
                 "https://www.linkedin.com/in/maximogarmasarvazquez/",
               ],
-
               priceRange: "$$",
               serviceType: "Desarrollo Web",
             }),
           }}
         />
 
+        {/* 🔥 PROVIDER GLOBAL REAL */}
         <ThemeProvider>
           <FloatingNav />
-          <main className="w-full overflow-x-hidden">{children}</main>
+
+          {/* botón global de theme */}
+          <ThemeToggle />
+
+          <main className="w-full overflow-x-hidden">
+            {children}
+          </main>
         </ThemeProvider>
       </body>
     </html>

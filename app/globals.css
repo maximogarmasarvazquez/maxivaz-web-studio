@@ -2,33 +2,161 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 🔥 Smooth transitions globales */
 html {
   scroll-behavior: smooth;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* 🔥 FIX overflow horizontal */
-html,
-body {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-}
+/* =========================
+   UX / ACCESSIBILITY
+========================= */
 
-/* 🔥 Base theme */
-body {
-  @apply bg-white text-black dark:bg-[#0B0B0B] dark:text-white;
-}
-
-/* 🔥 Mejora UX selección */
+/* Selección */
 ::selection {
   background: #a855f7;
   color: white;
 }
 
-/* 🔥 Mejora accesibilidad (opcional pero recomendado) */
+/* Focus accesible */
 :focus-visible {
   outline: 2px solid #a855f7;
   outline-offset: 2px;
+}
+
+/* =========================
+   BASE THEME
+========================= */
+
+body {
+  @apply bg-white text-black dark:bg-[#0B0B0B] dark:text-white;
+
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+
+  overflow-x: hidden;
+}
+
+/* =========================
+   LIQUID MORPH
+========================= */
+
+@keyframes liquidMorph {
+  0% {
+    border-radius: 58% 42% 63% 37% / 41% 53% 47% 59%;
+  }
+  25% {
+    border-radius: 44% 56% 30% 70% / 59% 31% 69% 41%;
+  }
+  50% {
+    border-radius: 60% 40% 55% 45% / 35% 60% 40% 65%;
+  }
+  75% {
+    border-radius: 30% 70% 45% 55% / 60% 35% 65% 40%;
+  }
+  100% {
+    border-radius: 58% 42% 63% 37% / 41% 53% 47% 59%;
+  }
+}
+
+.liquid-wave {
+  animation: liquidMorph 18s ease-in-out infinite;
+  will-change: border-radius, transform;
+}
+
+/* =========================
+   RIPPLE EFFECTS
+========================= */
+
+@keyframes ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(12);
+    opacity: 0;
+  }
+}
+
+@keyframes rippleSlow {
+  0% {
+    transform: translate(-50%, -50%) scale(0.4);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(18);
+    opacity: 0;
+  }
+}
+
+/* =========================
+   PAINT / AEROSOL EFFECTS
+========================= */
+
+@keyframes paintFade {
+  0% {
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 0;
+  }
+  15% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  60% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.9);
+    opacity: 0;
+    filter: blur(30px);
+  }
+}
+
+.animate-paintFade {
+  animation: paintFade 2.2s ease-out forwards;
+}
+
+@keyframes aerosolFade {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  15% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+  35% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.8);
+    opacity: 0;
+    filter: blur(14px);
+  }
+}
+
+.animate-aerosol {
+  animation: aerosolFade 2.5s ease-out forwards;
+}
+
+/* =========================
+   PERFORMANCE OPTIMIZATIONS
+========================= */
+
+/* evita highlight mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* mejora UX general */
+img,
+button,
+a {
+  user-select: none;
 }

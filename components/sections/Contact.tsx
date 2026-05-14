@@ -1,6 +1,6 @@
 "use client";
 
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export default function Contact() {
@@ -9,111 +9,73 @@ export default function Contact() {
   return (
     <footer
       id="contact"
-      role="contentinfo"
-      aria-label="Contacto Maxivaz Web Studio"
-      className="relative py-24 px-6 border-t border-black/10 dark:border-white/10 bg-white text-black dark:bg-[#0B0B0B] dark:text-white transition-colors"
+      className="relative py-32 px-6 transition-colors duration-700 bg-[#d7d7d7] dark:bg-[#100f0f] text-black dark:text-white border-t border-black/5 dark:border-white/5"
     >
-      {/* 🔥 Fondo decorativo */}
-      <div className="absolute inset-0 -z-10 pointer-events-none">
-        <div className="absolute right-0 bottom-0 w-[400px] h-[300px] bg-purple-500/10 blur-3xl" />
-      </div>
-
       <div className="max-w-6xl mx-auto">
+        {/* CONTACT BOX */}
+        <div className="grid lg:grid-cols-2 gap-16 items-center mb-32 bg-white/20 dark:bg-white/[0.02] border border-black/5 dark:border-white/5 rounded-[3rem] p-10 md:p-16 backdrop-blur-xl">
+          <div>
+            <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tighter">
+              ¿Listo para <br /> empezar?
+            </h2>
+            <p className="text-zinc-600 dark:text-zinc-400 text-lg mb-8">
+              Hablemos sobre tu proyecto y creemos algo increíble juntos.
+            </p>
+            <a
+              href="https://wa.me/5493546431626"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center justify-between bg-black text-white dark:bg-white dark:text-black px-8 py-5 rounded-2xl font-bold uppercase text-xs tracking-[0.2em] hover:opacity-90 transition-all"
+            >
+              Hablemos por WhatsApp
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+            </a>
+          </div>
 
-        {/* 🔥 CTA principal */}
-        <div className="text-center mb-16">
-
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            ¿Listo para crear tu página web profesional?
-          </h2>
-
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
-            Contactame y empecemos a trabajar en una web que genere clientes reales para tu negocio.
-          </p>
-
-          <a
-            href="https://wa.me/5493546431626"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Contactar por WhatsApp"
-            className="inline-block bg-black text-white dark:bg-white dark:text-black px-8 py-4 rounded-xl font-medium hover:scale-105 transition"
-          >
-            Hablemos por WhatsApp
-          </a>
-
+          <div className="space-y-6">
+            <div className="flex items-center gap-5 p-4 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+              <div className="h-12 w-12 rounded-xl bg-green-500/10 flex items-center justify-center">
+                <Phone className="w-6 h-6 text-green-500" />
+              </div>
+              <span className="font-bold text-lg">+54 9 3546 431626</span>
+            </div>
+            <div className="flex items-center gap-5 p-4 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+              <div className="h-12 w-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                <Mail className="w-6 h-6 text-blue-500" />
+              </div>
+              <span className="font-bold text-lg">maxivaz55@gmail.com</span>
+            </div>
+            <div className="flex items-center gap-5 p-4 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+              <div className="h-12 w-12 rounded-xl bg-purple-500/10 flex items-center justify-center">
+                <MapPin className="w-6 h-6 text-purple-500" />
+              </div>
+              <span className="font-bold text-lg">Córdoba, Argentina</span>
+            </div>
+          </div>
         </div>
 
-        {/* 🔻 FOOTER */}
-        <div className="grid md:grid-cols-3 gap-12">
-
-          {/* Marca */}
-          <div>
-            <h3 className="text-2xl font-bold mb-4">
-              Maxivaz Web Studio
-            </h3>
-
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Desarrollo de sitios web modernos, rápidos y optimizados para SEO que ayudan a crecer negocios en Argentina.
-            </p>
-
-            <p className="text-gray-500 text-sm">
-              © {year} Maxivaz Web Studio. Todos los derechos reservados.
+        {/* BOTTOM FOOTER */}
+        <div className="grid md:grid-cols-3 gap-12 pt-16 border-t border-black/5 dark:border-white/5">
+          <div className="space-y-4">
+            <h3 className="text-xl font-black">Maxivaz Web Studio</h3>
+            <p className="text-zinc-500 dark:text-zinc-500 text-sm leading-relaxed">
+              Desarrollo de sitios web modernos optimizados para ayudar a crecer negocios en Argentina.
             </p>
           </div>
 
-          {/* Navegación */}
-          <nav aria-label="Navegación del sitio">
-            <h4 className="text-lg font-semibold mb-4">Navegación</h4>
-
-            <ul className="space-y-2 text-gray-600 dark:text-gray-400">
-              <li>
-                <Link href="#hero" className="hover:opacity-70 transition">
-                  Inicio
-                </Link>
-              </li>
-              <li>
-                <Link href="#services" className="hover:opacity-70 transition">
-                  Servicios
-                </Link>
-              </li>
-              <li>
-                <Link href="#portfolio" className="hover:opacity-70 transition">
-                  Trabajos
-                </Link>
-              </li>
-              <li>
-                <Link href="#contact" className="hover:opacity-70 transition">
-                  Contacto
-                </Link>
-              </li>
-            </ul>
+          <nav className="flex flex-col gap-3">
+            <h4 className="font-bold uppercase text-[10px] tracking-widest text-zinc-400">Navegación</h4>
+            {["Inicio", "Servicios", "Trabajos", "Contacto"].map((item) => (
+              <Link key={item} href={`#${item.toLowerCase()}`} className="text-zinc-500 hover:text-blue-500 transition-colors text-sm">
+                {item}
+              </Link>
+            ))}
           </nav>
 
-          {/* Contacto */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Contacto directo</h4>
-
-            <address className="not-italic space-y-4 text-gray-600 dark:text-gray-400">
-
-              <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-green-500" />
-                <span>+54 9 3546 431626</span>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-blue-500" />
-                <span>maxivaz55@gmail.com</span>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-purple-500" />
-                <span>Calamuchita, Córdoba, Argentina</span>
-              </div>
-
-            </address>
-
+          <div className="md:text-right">
+            <p className="text-zinc-500 text-sm mb-2">© {year} Maxivaz Web Studio.</p>
+            <p className="text-xs text-zinc-400">Todos los derechos reservados.</p>
           </div>
-
         </div>
       </div>
     </footer>
