@@ -1,126 +1,74 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import NavItem from "@/components/ui/NavItem";
 import { Home, Layers, Star, Briefcase, Mail, Menu, X } from "lucide-react";
 
-const sections = ["hero", "services", "benefits", "portfolio", "contact"] as const;
-type SectionId = (typeof sections)[number];
-
 export default function FloatingNav() {
+  const [active, setActive] = useState("hero");
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState<SectionId>("hero");
-
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const indicatorRef = useRef<HTMLDivElement | null>(null);
-
-  // 🔥 SCROLL DETECTION FIXED
-  useEffect(() => {
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (ticking) return;
-      ticking = true;
-
-      requestAnimationFrame(() => {
-        const scrollY = window.scrollY;
-        let current: SectionId = "hero";
-
-        for (const id of sections) {
-          const el = document.getElementById(id);
-          if (!el) continue;
-
-          const top = el.offsetTop;
-          const bottom = top + el.offsetHeight;
-
-          // 👇 pequeño offset para mejor precisión
-          if (scrollY + 120 >= top && scrollY + 120 < bottom) {
-            current = id;
-            break;
-          }
-        }
-
-        setActive(current);
-        ticking = false;
-      });
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // 🔥 INDICATOR FIXED RELATIVE TO CONTAINER
-  useEffect(() => {
-    const activeEl = document.querySelector(
-      `[data-nav="${active}"]`
-    ) as HTMLElement | null;
-
-    const container = containerRef.current;
-    const indicator = indicatorRef.current;
-
-    if (!activeEl || !container || !indicator) return;
-
-    const offset = activeEl.offsetTop - container.offsetTop;
-
-    indicator.style.transform = `translate3d(0, ${offset}px, 0)`;
-    indicator.style.height = `${activeEl.offsetHeight}px`;
-  }, [active]);
 
   return (
     <>
-      {/* 🖥️ DESKTOP NAV */}
-      <nav className="hidden md:block fixed right-10 top-1/2 -translate-y-1/2 z-50 group">
+      {/* 🖥 DESKTOP NAV */}
+      <nav className="hidden md:block fixed right-10 top-1/2 -translate-y-1/2 z-50">
         <div
-          ref={containerRef}
           className="
-            relative z-20 flex flex-col gap-4 px-3 py-6 rounded-[2.5rem]
-            backdrop-blur-3xl border transition-all duration-500
-            bg-white/70 border-white/40 shadow-xl
-            dark:bg-black/40 dark:border-white/10
-            w-[72px] hover:w-[190px] overflow-hidden
+            relative flex flex-col gap-5 px-4 py-6
+            rounded-[2.5rem] backdrop-blur-3xl
+            bg-white/80 dark:bg-black/50
+            border border-white/30 dark:border-white/10
+            shadow-xl
+            w-[78px] hover:w-[200px]
+            transition-all duration-500 overflow-hidden
           "
         >
-          {/* INDICADOR */}
-          <div
-            ref={indicatorRef}
-            className="
-              absolute left-2 right-2 rounded-2xl pointer-events-none z-10 top-0
-              transition-all duration-500 ease-out
-              bg-white/10 dark:bg-white/10
-              border-r-2 border-white/60 dark:border-white/40
-            "
+          <NavItem
+            href="#hero"
+            icon={<Home />}
+            label="Hero"
+            isActive={active === "hero"}
+            onClick={() => setActive("hero")}
           />
 
-          {sections.map((id) => (
-            <div key={id} className="relative z-20" data-nav={id}>
-              <NavItem
-                href={`#${id}`}
-                icon={
-                  id === "hero" ? (
-                    <Home />
-                  ) : id === "services" ? (
-                    <Layers />
-                  ) : id === "benefits" ? (
-                    <Star />
-                  ) : id === "portfolio" ? (
-                    <Briefcase />
-                  ) : (
-                    <Mail />
-                  )
-                }
-                label={id.charAt(0).toUpperCase() + id.slice(1)}
-                isActive={active === id}
-                onClick={() => setActive(id)} // 🔥 FIX UX CLICK
-              />
-            </div>
-          ))}
+          <NavItem
+            href="#services"
+            icon={<Layers />}
+            label="Services"
+            isActive={active === "services"}
+            onClick={() => setActive("services")}
+          />
+
+          <NavItem
+            href="#benefits"
+            icon={<Star />}
+            label="Benefits"
+            isActive={active === "benefits"}
+            onClick={() => setActive("benefits")}
+          />
+
+          <NavItem
+            href="#portfolio"
+            icon={<Briefcase />}
+            label="Portfolio"
+            isActive={active === "portfolio"}
+            onClick={() => setActive("portfolio")}
+          />
+
+          <NavItem
+            href="#contact"
+            icon={<Mail />}
+            label="Contact"
+            isActive={active === "contact"}
+            onClick={() => setActive("contact")}
+          />
         </div>
       </nav>
 
       {/* 📱 MOBILE BUTTON */}
       <button
         onClick={() => setOpen(!open)}
-        className="md:hidden fixed bottom-6 right-6 z-[70] p-4 rounded-2xl shadow-2xl bg-white text-black dark:bg-white dark:text-black"
+        className="md:hidden fixed bottom-6 right-6 z-[70] p-4 rounded-2xl bg-white text-black dark:bg-black dark:text-white shadow-xl"
       >
         {open ? <X /> : <Menu />}
       </button>
@@ -133,37 +81,70 @@ export default function FloatingNav() {
         `}
       >
         <div
-          className="absolute inset-0 bg-white/80 dark:bg-black/90 backdrop-blur-2xl"
+          className="absolute inset-0 bg-white/90 dark:bg-black/90 backdrop-blur-2xl"
           onClick={() => setOpen(false)}
         />
 
-        <div className="absolute bottom-24 right-6 left-6 flex flex-col gap-3">
-          {sections.map((id) => (
-            <NavItem
-              key={id}
-              href={`#${id}`}
-              icon={
-                id === "hero" ? (
-                  <Home />
-                ) : id === "services" ? (
-                  <Layers />
-                ) : id === "benefits" ? (
-                  <Star />
-                ) : id === "portfolio" ? (
-                  <Briefcase />
-                ) : (
-                  <Mail />
-                )
-              }
-              label={id.charAt(0).toUpperCase() + id.slice(1)}
-              vertical
-              isActive={active === id}
-              onClick={() => {
-                setActive(id);
-                setOpen(false);
-              }}
-            />
-          ))}
+        <div className="absolute bottom-24 right-6 left-6 flex flex-col gap-4">
+          <NavItem
+            href="#hero"
+            icon={<Home />}
+            label="Hero"
+            vertical
+            isActive={active === "hero"}
+            onClick={() => {
+              setActive("hero");
+              setOpen(false);
+            }}
+          />
+
+          <NavItem
+            href="#services"
+            icon={<Layers />}
+            label="Services"
+            vertical
+            isActive={active === "services"}
+            onClick={() => {
+              setActive("services");
+              setOpen(false);
+            }}
+          />
+
+          <NavItem
+            href="#benefits"
+            icon={<Star />}
+            label="Benefits"
+            vertical
+            isActive={active === "benefits"}
+            onClick={() => {
+              setActive("benefits");
+              setOpen(false);
+            }}
+          />
+
+          <NavItem
+            href="#portfolio"
+            icon={<Briefcase />}
+            label="Portfolio"
+            vertical
+            isActive={active === "portfolio"}
+            onClick={() => {
+              setActive("portfolio");
+              setOpen(false);
+            }}
+          />
+
+          <NavItem
+            href="#contact"
+            icon={<Mail />}
+            label="Contact"
+            vertical
+            isActive={active === "contact"}
+            onClick={() => {
+              setActive("contact");
+              setOpen(false);
+            }}
+          />
         </div>
       </div>
     </>

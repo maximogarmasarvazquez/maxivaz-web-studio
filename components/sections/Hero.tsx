@@ -88,7 +88,7 @@ export default function Hero() {
   }, [isMobile, isDark]);
 
   return (
-    <section
+    <section id="hero"
       ref={sectionRef}
       className="relative isolate min-h-screen overflow-hidden bg-white dark:bg-[#0B0B0B]"
     >
@@ -119,7 +119,8 @@ export default function Hero() {
         </h1>
 
         <p className="mt-10 max-w-3xl text-base leading-relaxed sm:text-lg md:text-[22px] text-slate-700 dark:text-zinc-300">
-          Creamos experiencias visuales personalizadas de alto impacto, diseñadas para cautivar a tu audiencia.
+          Creamos experiencias visuales personalizadas y funcionales para tu marca, combinando diseño web moderno con arte digital
+           único.
         </p>
 
         {/* BUTTONS */}

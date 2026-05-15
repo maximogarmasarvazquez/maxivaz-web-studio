@@ -1,6 +1,8 @@
 "use client";
 
 import React, { isValidElement, cloneElement } from "react";
+import Link from "next/link";
+import type { LucideProps } from "lucide-react";
 
 interface NavItemProps {
   href: string;
@@ -19,47 +21,39 @@ export default function NavItem({
   vertical = false,
   isActive = false,
 }: NavItemProps) {
+
   const renderIcon = () => {
     if (isValidElement(icon)) {
-      return cloneElement(
-        icon as React.ReactElement<{
-          size?: number;
-          strokeWidth?: number;
-          className?: string;
-        }>,
-        {
-          size: 22,
-          strokeWidth: isActive ? 2.5 : 2,
-          className: "transition-all duration-500",
-        }
-      );
+      return cloneElement(icon as React.ReactElement<LucideProps>, {
+        size: 22,
+        strokeWidth: isActive ? 2.5 : 2,
+        className: "transition-all duration-300",
+      });
     }
     return icon;
   };
 
   return (
-    <a
+    <Link
       href={href}
       onClick={onClick}
       className={`
-        group flex w-full transition-all duration-300
-        ${
-          vertical
-            ? "flex-row-reverse justify-end items-center gap-4 p-4 rounded-2xl bg-black/5 dark:bg-white/5"
-            : "items-center gap-4"
-        }
-        text-sm cursor-pointer
+        group flex items-center w-full cursor-pointer
+        transition-all duration-300
+        ${vertical ? "gap-4 p-4 rounded-2xl" : "gap-4"}
+        ${vertical ? "bg-black/5 dark:bg-white/5" : ""}
       `}
     >
       {/* ICON */}
       <div
         className={`
-          shrink-0 w-11 h-11 flex items-center justify-center rounded-xl
-          transition-all duration-500
+          w-11 h-11 flex items-center justify-center rounded-xl shrink-0
+          transition-all duration-300
+
           ${
             isActive
               ? "text-blue-500 scale-110"
-              : "text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white"
+              : "text-black dark:text-white"
           }
         `}
       >
@@ -69,21 +63,19 @@ export default function NavItem({
       {/* LABEL */}
       <span
         className={`
-          whitespace-nowrap transition-all duration-500 ease-out
-          ${
-            vertical
-              ? "text-base font-semibold"
-              : "text-sm opacity-0 translate-x-[-10px] group-hover:opacity-100 group-hover:translate-x-0"
-          }
-          ${
-            isActive
-              ? "text-blue-500 font-bold"
-              : "text-slate-600 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white"
-          }
+          whitespace-nowrap
+          transition-all duration-300
+
+          /* 🔥 CONTRASTE FUERTE REAL */
+          text-black dark:text-white
+
+          ${isActive ? "text-blue-500 dark:text-blue-500 font-bold" : "text-gray-700 dark:text-gray-300"}
+
+          ${vertical ? "text-base font-semibold" : "text-sm"}
         `}
       >
         {label}
       </span>
-    </a>
+    </Link>
   );
 }

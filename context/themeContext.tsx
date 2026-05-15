@@ -16,38 +16,39 @@ type ThemeContextType = {
   isDark: boolean;
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
+  mounted: boolean;
 };
 
 const ThemeContext = createContext<ThemeContextType | null>(null);
 
-// 🔥 inicialización segura
-function getInitialTheme(): Theme {
-  if (typeof window === "undefined") return "dark";
-
-  const saved = localStorage.getItem("theme") as Theme | null;
-  return saved ?? "dark";
-}
-
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(() => getInitialTheme());
+  const [mounted, setMounted] = useState(false);
+  const [theme, setThemeState] = useState<Theme>("dark");
 
   const isDark = theme === "dark";
 
-  // 🔥 sincroniza DOM + localStorage
+  // 🔥 Hydration safe init
   useEffect(() => {
-    const root = document.documentElement;
+    const saved = localStorage.getItem("theme") as Theme | null;
+    const initial = saved ?? "dark";
 
+    setThemeState(initial);
+    setMounted(true);
+  }, []);
+
+  // 🔥 sync DOM
+  useEffect(() => {
+    if (!mounted) return;
+
+    const root = document.documentElement;
     root.classList.toggle("dark", isDark);
     localStorage.setItem("theme", theme);
-  }, [theme, isDark]);
+  }, [theme, isDark, mounted]);
 
-  const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
-  };
+  const setTheme = (newTheme: Theme) => setThemeState(newTheme);
 
-  const toggleTheme = () => {
+  const toggleTheme = () =>
     setThemeState((prev) => (prev === "dark" ? "light" : "dark"));
-  };
 
   const value = useMemo(
     () => ({
@@ -55,8 +56,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       isDark,
       setTheme,
       toggleTheme,
+      mounted,
     }),
-    [theme, isDark]
+    [theme, isDark, mounted]
   );
 
   return (
