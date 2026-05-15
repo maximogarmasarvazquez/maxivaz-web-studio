@@ -40,8 +40,7 @@ export default function NavItem({
       className={`
         group flex items-center w-full cursor-pointer
         transition-all duration-300
-        ${vertical ? "gap-4 p-4 rounded-2xl" : "gap-4"}
-        ${vertical ? "bg-black/5 dark:bg-white/5" : ""}
+        ${vertical ? "gap-4 p-4 rounded-2xl bg-black/5 dark:bg-white/5" : "gap-4"}
       `}
     >
       {/* ICON */}
@@ -49,11 +48,10 @@ export default function NavItem({
         className={`
           w-11 h-11 flex items-center justify-center rounded-xl shrink-0
           transition-all duration-300
-
           ${
             isActive
               ? "text-blue-500 scale-110"
-              : "text-black dark:text-white"
+              : "text-black dark:text-white opacity-70 group-hover:opacity-100"
           }
         `}
       >
@@ -63,15 +61,13 @@ export default function NavItem({
       {/* LABEL */}
       <span
         className={`
-          whitespace-nowrap
-          transition-all duration-300
-
-          /* 🔥 CONTRASTE FUERTE REAL */
-          text-black dark:text-white
-
-          ${isActive ? "text-blue-500 dark:text-blue-500 font-bold" : "text-gray-700 dark:text-gray-300"}
-
-          ${vertical ? "text-base font-semibold" : "text-sm"}
+          whitespace-nowrap transition-all duration-300
+          ${vertical ? "text-base" : "text-sm"}
+          ${
+            isActive 
+              ? "text-blue-500 dark:text-blue-500 font-bold" 
+              : "text-gray-700 dark:text-gray-300 font-medium"
+          }
         `}
       >
         {label}

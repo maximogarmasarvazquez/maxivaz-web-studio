@@ -1,12 +1,77 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import NavItem from "@/components/ui/NavItem";
 import { Home, Layers, Star, Briefcase, Mail, Menu, X } from "lucide-react";
 
 export default function FloatingNav() {
   const [active, setActive] = useState("hero");
   const [open, setOpen] = useState(false);
+  
+  // Usamos una referencia para bloquear el observer sin provocar re-renders innecesarios
+  const isScrollingByClick = useRef(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Función para manejar el clic e ir directo a la sección
+  const handleNavClick = (id: string) => {
+    setActive(id);
+    setOpen(false);
+
+    // Activamos el bloqueo del observer
+    isScrollingByClick.current = true;
+
+    // Limpiamos timeouts previos si el usuario hace clics rápidos
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+    // Desbloqueamos el observer después de 1 segundo (cuando el scroll ya terminó)
+    timeoutRef.current = setTimeout(() => {
+      isScrollingByClick.current = false;
+    }, 1000); 
+  };
+
+  // Limpieza del timeout al desmontar el componente
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
+  // Intersection Observer inteligente
+  useEffect(() => {
+    const createObserver = (id: string) => {
+      const element = document.getElementById(id);
+      if (!element) return null;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          // SI el usuario hizo clic en un botón, ignoramos por completo el scroll intermedio
+          if (isScrollingByClick.current) return;
+
+          if (entry.isIntersecting) {
+            setActive(id);
+          }
+        },
+        { rootMargin: "-40% 0px -40% 0px" } // Margen ideal para pantallas medianas/grandes
+      );
+
+      observer.observe(element);
+      return { observer, element };
+    };
+
+    const obsHero = createObserver("hero");
+    const obsServices = createObserver("services");
+    const obsBenefits = createObserver("benefits");
+    const obsPortfolio = createObserver("portfolio");
+    const obsContact = createObserver("contact");
+
+    return () => {
+      if (obsHero) obsHero.observer.unobserve(obsHero.element);
+      if (obsServices) obsServices.observer.unobserve(obsServices.element);
+      if (obsBenefits) obsBenefits.observer.unobserve(obsBenefits.element);
+      if (obsPortfolio) obsPortfolio.observer.unobserve(obsPortfolio.element);
+      if (obsContact) obsContact.observer.unobserve(obsContact.element);
+    };
+  }, []);
 
   return (
     <>
@@ -28,7 +93,7 @@ export default function FloatingNav() {
             icon={<Home />}
             label="Hero"
             isActive={active === "hero"}
-            onClick={() => setActive("hero")}
+            onClick={() => handleNavClick("hero")}
           />
 
           <NavItem
@@ -36,7 +101,7 @@ export default function FloatingNav() {
             icon={<Layers />}
             label="Services"
             isActive={active === "services"}
-            onClick={() => setActive("services")}
+            onClick={() => handleNavClick("services")}
           />
 
           <NavItem
@@ -44,7 +109,7 @@ export default function FloatingNav() {
             icon={<Star />}
             label="Benefits"
             isActive={active === "benefits"}
-            onClick={() => setActive("benefits")}
+            onClick={() => handleNavClick("benefits")}
           />
 
           <NavItem
@@ -52,7 +117,7 @@ export default function FloatingNav() {
             icon={<Briefcase />}
             label="Portfolio"
             isActive={active === "portfolio"}
-            onClick={() => setActive("portfolio")}
+            onClick={() => handleNavClick("portfolio")}
           />
 
           <NavItem
@@ -60,7 +125,7 @@ export default function FloatingNav() {
             icon={<Mail />}
             label="Contact"
             isActive={active === "contact"}
-            onClick={() => setActive("contact")}
+            onClick={() => handleNavClick("contact")}
           />
         </div>
       </nav>
@@ -69,6 +134,7 @@ export default function FloatingNav() {
       <button
         onClick={() => setOpen(!open)}
         className="md:hidden fixed bottom-6 right-6 z-[70] p-4 rounded-2xl bg-white text-black dark:bg-black dark:text-white shadow-xl"
+        aria-label="Toggle menu"
       >
         {open ? <X /> : <Menu />}
       </button>
@@ -92,10 +158,7 @@ export default function FloatingNav() {
             label="Hero"
             vertical
             isActive={active === "hero"}
-            onClick={() => {
-              setActive("hero");
-              setOpen(false);
-            }}
+            onClick={() => handleNavClick("hero")}
           />
 
           <NavItem
@@ -104,10 +167,7 @@ export default function FloatingNav() {
             label="Services"
             vertical
             isActive={active === "services"}
-            onClick={() => {
-              setActive("services");
-              setOpen(false);
-            }}
+            onClick={() => handleNavClick("services")}
           />
 
           <NavItem
@@ -116,10 +176,7 @@ export default function FloatingNav() {
             label="Benefits"
             vertical
             isActive={active === "benefits"}
-            onClick={() => {
-              setActive("benefits");
-              setOpen(false);
-            }}
+            onClick={() => handleNavClick("benefits")}
           />
 
           <NavItem
@@ -128,10 +185,7 @@ export default function FloatingNav() {
             label="Portfolio"
             vertical
             isActive={active === "portfolio"}
-            onClick={() => {
-              setActive("portfolio");
-              setOpen(false);
-            }}
+            onClick={() => handleNavClick("portfolio")}
           />
 
           <NavItem
@@ -140,10 +194,7 @@ export default function FloatingNav() {
             label="Contact"
             vertical
             isActive={active === "contact"}
-            onClick={() => {
-              setActive("contact");
-              setOpen(false);
-            }}
+            onClick={() => handleNavClick("contact")}
           />
         </div>
       </div>
