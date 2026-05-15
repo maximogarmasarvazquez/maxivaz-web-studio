@@ -9,10 +9,11 @@ export default function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const handle = window.requestAnimationFrame(() => setMounted(true));
+    return () => window.cancelAnimationFrame(handle);
   }, []);
 
-  // 🔥 IMPORTANTE: evita mismatch SSR/CSR
+  // evita mismatch SSR/CSR
   if (!mounted) {
     return (
       <button className="fixed bottom-6 left-6 z-50 px-4 py-2 rounded-2xl opacity-0">

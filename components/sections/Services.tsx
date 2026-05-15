@@ -28,8 +28,6 @@ const services = [
 ];
 
 export default function Services() {
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme !== "light";
 
   return (
     <section

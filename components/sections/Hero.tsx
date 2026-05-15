@@ -1,15 +1,13 @@
 "use client";
-
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import LiquidBackground from "../background/LiquidBackground";
+import dynamic from "next/dynamic";
 import { useTheme } from "@/context/themeContext";
 
-type Ripple = {
-  id: number;
-  x: number;
-  y: number;
-};
+const LiquidBackground = dynamic(
+  () => import("../background/LiquidBackground"),
+  { ssr: false }
+);
 
 type PaintParticle = {
   id: string;
@@ -22,182 +20,104 @@ type PaintParticle = {
 
 export default function Hero() {
   const { isDark } = useTheme();
-
   const sectionRef = useRef<HTMLDivElement>(null);
-
-  const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
-
-  const [ripples, setRipples] = useState<Ripple[]>([]);
   const [particles, setParticles] = useState<PaintParticle[]>([]);
 
-  const isPaintingRef = useRef(false);
+// Reemplaza tus useEffects por esto:
 
-  // ================= MOBILE CHECK =================
+useEffect(() => {
+  const timeoutId = window.setTimeout(() => {
+    setMounted(true);
+  }, 0);
+
+  return () => {
+    window.clearTimeout(timeoutId);
+    setMounted(false);
+  };
+}, []);
+
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-
-    return () => {
-      window.removeEventListener("resize", checkMobile);
-    };
-  }, []);
-
-  // ================= MOUSE + EFFECTS =================
-  useEffect(() => {
-    if (isMobile) return;
-
-    let lastSpawn = 0;
+    if (!mounted) return;
 
     const handleMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 50;
-      const y = (e.clientY / window.innerHeight - 0.5) * 50;
-
-      setMouse({ x, y });
-
-      // PAINT TRAIL
-      if (!isPaintingRef.current) return;
-
-      const now = performance.now();
-      if (now - lastSpawn < 16) return;
-
-      lastSpawn = now;
-
-      if (!sectionRef.current) return;
-
-      const rect = sectionRef.current.getBoundingClientRect();
-
-      const centerX = e.clientX - rect.left;
-      const centerY = e.clientY - rect.top;
-
-      const newParticles: PaintParticle[] = Array.from({
-        length: 5,
-      }).map((_, i) => ({
-        id: `${now}-${i}-${Math.random()}`,
-        x: centerX + (Math.random() - 0.5) * 80,
-        y: centerY + (Math.random() - 0.5) * 80,
-        size: Math.random() * 40 + 18,
-        opacity: Math.random() * 0.35 + 0.08,
-        blur: Math.random() * 20 + 8,
-      }));
-
-      setParticles((prev) => [
-        ...prev.slice(-240),
-        ...newParticles,
-      ]);
-
-      newParticles.forEach((particle) => {
-        setTimeout(() => {
-          setParticles((prev) =>
-            prev.filter((p) => p.id !== particle.id)
-          );
-        }, 2200);
+      setMouse({
+        x: (e.clientX / window.innerWidth - 0.5) * 50,
+        y: (e.clientY / window.innerHeight - 0.5) * 50,
       });
-    };
 
-    const handleClick = (e: MouseEvent) => {
       if (!sectionRef.current) return;
-
       const rect = sectionRef.current.getBoundingClientRect();
+      
+      const newParticle: PaintParticle = {
+        id: Math.random().toString(),
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+        size: Math.random() * 45 + 25,
+        opacity: isDark ? 0.25 : 0.45,
+        blur: Math.random() * 15 + 10,
+      };
 
-      const id = performance.now();
-
-      setRipples((prev) => [
-        ...prev.slice(-5),
-        {
-          id,
-          x: e.clientX - rect.left,
-          y: e.clientY - rect.top,
-        },
-      ]);
-
-      setTimeout(() => {
-        setRipples((prev) =>
-          prev.filter((r) => r.id !== id)
-        );
-      }, 2200);
-    };
-
-    const handleMouseDown = () => {
-      isPaintingRef.current = true;
-    };
-
-    const handleMouseUp = () => {
-      isPaintingRef.current = false;
+      setParticles((prev) => [...prev.slice(-40), newParticle]);
     };
 
     window.addEventListener("mousemove", handleMove);
-    window.addEventListener("mousedown", handleMouseDown);
-    window.addEventListener("mouseup", handleMouseUp);
-    window.addEventListener("click", handleClick);
+    return () => window.removeEventListener("mousemove", handleMove);
+  }, [mounted, isDark]);
 
-    return () => {
-      window.removeEventListener("mousemove", handleMove);
-      window.removeEventListener("mousedown", handleMouseDown);
-      window.removeEventListener("mouseup", handleMouseUp);
-      window.removeEventListener("click", handleClick);
-    };
-  }, [isMobile]);
+  // Importante: El "esqueleto" de carga debe ser oscuro si tu web arranca en dark
+  if (!mounted) {
+    return <section id="hero" className="min-h-screen w-full bg-[#0B0B0B]" />;
+  }
 
-  // ================= RENDER =================
   return (
     <section
       ref={sectionRef}
       id="hero"
-      className="relative isolate min-h-screen overflow-hidden transition-colors duration-500"
+      className="relative isolate min-h-screen overflow-hidden transition-colors duration-700 
+                 bg-white dark:bg-[#0B0B0B]" 
     >
-      <LiquidBackground
-        mouse={mouse}
-        particles={particles}
-        isDark={isDark}
-      />
+      {/* El fondo líquido sigue necesitando isDark por ser un Canvas */}
+      <LiquidBackground mouse={mouse} particles={particles} isDark={isDark} />
 
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 text-center text-black dark:text-white">
-
-        {/* BADGE */}
-        <div
-          className={`mb-10 inline-flex items-center gap-2 rounded-full border px-5 py-2.5 backdrop-blur-2xl shadow-lg ${
-            isDark
-              ? "border-white/10 bg-white/[0.04]"
-              : "border-blue-200/60 bg-white/30 shadow-blue-500/10"
-          }`}
-        >
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 text-center">
+        
+        {/* Badge: Ahora usa clases dark: de Tailwind */}
+        <div className="
+          mb-10 inline-flex items-center gap-2 rounded-full border px-5 py-2.5 backdrop-blur-2xl
+          border-blue-200/60 bg-white/30 
+          dark:border-white/10 dark:bg-white/[0.04]
+        ">
           <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span className={`text-[11px] font-medium uppercase tracking-[0.35em] ${
-            isDark ? "text-zinc-400" : "text-blue-950/70"
-          }`}>
+          <span className="text-[11px] font-medium uppercase tracking-[0.35em] text-blue-950/70 dark:text-zinc-400">
             Maxivaz Web Studio
           </span>
         </div>
 
-        {/* TITLE */}
-        <h1 className="max-w-6xl text-5xl font-black leading-[0.92] tracking-[-0.04em] sm:text-6xl md:text-7xl lg:text-[96px]">
-          <span className={isDark ? "text-white" : "text-[#050816]"}>
+        {/* Title: Clases nativas dark: */}
+        <h1 className="text-5xl font-black leading-[0.92] tracking-[-0.04em] sm:text-6xl md:text-7xl lg:text-[96px]">
+          <span className="text-[#050816] dark:text-white">
             Desarrollo web
           </span>
-
-          <span
-            className={`mt-2 block leading-tight pb-2 bg-gradient-to-r bg-clip-text text-transparent ${
-              isDark
-                ? "from-violet-400 via-fuchsia-500 to-cyan-400"
-                : "from-fuchsia-500 via-violet-400 to-cyan-400"
-            }`}
-          >
+          <span className="
+            mt-2 block leading-tight pb-2 bg-gradient-to-r bg-clip-text text-transparent
+            from-fuchsia-600 via-violet-500 to-blue-600
+            dark:from-violet-400 dark:via-fuchsia-500 dark:to-cyan-400
+          ">
             & Arte digital
           </span>
         </h1>
 
-        {/* DESCRIPTION */}
-        <p className={`mt-10 max-w-3xl text-base leading-relaxed sm:text-lg md:text-[22px] ${
-          isDark ? "text-zinc-300" : "text-slate-700"
-        }`}>
+        {/* Paragraph */}
+        <p className="
+          mt-10 max-w-3xl text-base leading-relaxed sm:text-lg md:text-[22px]
+          text-slate-700 dark:text-zinc-300
+        ">
           Creamos experiencias visuales personalizadas de alto impacto, diseñadas para cautivar a tu audiencia.
         </p>
-   {/* BUTTONS */}
+
+           {/* BUTTONS */}
         <div className="mt-14 flex flex-col gap-4 sm:flex-row">
           <a
             href="https://wa.me/5493546431626"

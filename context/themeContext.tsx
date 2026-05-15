@@ -3,9 +3,10 @@
 import {
   createContext,
   useContext,
-  useEffect,
+  useMemo,
   useState,
   ReactNode,
+  useEffect,
 } from "react";
 
 type Theme = "light" | "dark";
@@ -18,39 +19,52 @@ type ThemeContextType = {
 
 const ThemeContext = createContext<ThemeContextType | null>(null);
 
+// 🔥 LÓGICA DE INICIO: Prioridad al Dark
+function getInitialTheme(): Theme {
+  // En el servidor (SSR) siempre devolvemos "dark" para coincidir con el layout
+  if (typeof window === "undefined") return "dark";
+
+  const saved = localStorage.getItem("theme") as Theme | null;
+  
+  // Si el usuario ya eligió "light" antes, lo respetamos. 
+  // Pero si es nuevo o no hay nada, devolvemos "dark".
+  return saved === "light" ? "light" : "dark";
+}
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light");
-  const [mounted, setMounted] = useState(false);
+  const [theme, setTheme] = useState<Theme>(() => getInitialTheme());
 
+  // Sincronización inicial de la clase CSS al montar el componente
   useEffect(() => {
-    const saved = localStorage.getItem("theme") as Theme | null;
-
-    const initial: Theme =
-      saved === "dark" || saved === "light" ? saved : "light";
-
-    setTheme(initial);
-    setMounted(true);
+    const root = window.document.documentElement;
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
   }, []);
 
-  useEffect(() => {
-    if (!mounted) return;
-
-    document.documentElement.classList.toggle("dark", theme === "dark");
-    localStorage.setItem("theme", theme);
-  }, [theme, mounted]);
-
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+    const next = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+
+    if (typeof window !== "undefined") {
+      localStorage.setItem("theme", next);
+      document.documentElement.classList.toggle("dark", next === "dark");
+    }
   };
 
+  const value = useMemo(
+    () => ({
+      theme,
+      isDark: theme === "dark",
+      toggleTheme,
+    }),
+    [theme]
+  );
+
   return (
-    <ThemeContext.Provider
-      value={{
-        theme,
-        isDark: theme === "dark",
-        toggleTheme,
-      }}
-    >
+    <ThemeContext.Provider value={value}>
       {children}
     </ThemeContext.Provider>
   );
