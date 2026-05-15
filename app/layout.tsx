@@ -6,15 +6,60 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://maxivaz.com.ar"),
+
   title: {
-    default: "Maxivaz Web Studio | Desarrollo Web Profesional",
-    template: "%s | Maxivaz Web Studio",
+    default:
+      "Desarrollo Web Profesional en Calamuchita y Córdoba",
+    template: "%s",
   },
+
   description:
-    "Estudio de diseño y desarrollo web profesional enfocado en potenciar negocios y marcas digitales.",
+    "Creamos páginas web profesionales, rápidas y optimizadas para Google (SEO) en Córdoba y el Valle de Calamuchita.",
+
+  keywords: [
+    "desarrollo web calamuchita",
+    "desarrollo web cordoba",
+    "diseño web calamuchita",
+    "diseño web cordoba",
+    "paginas web cordoba",
+    "seo cordoba",
+    "next.js",
+    "react",
+    "landing pages",
+  ],
+
   robots: {
     index: true,
     follow: true,
+  },
+
+  openGraph: {
+    title:
+      "Desarrollo Web Profesional en Calamuchita y Córdoba",
+
+    description:
+      "Diseño y desarrollo web moderno para negocios, marcas y emprendimientos.",
+
+    url: "https://maxivaz.com.ar",
+
+    siteName: "Maxivaz",
+
+    locale: "es_AR",
+
+    type: "website",
+
+    images: [
+      {
+        url: "/p.png",
+        width: 1200,
+        height: 630,
+        alt: "Desarrollo Web Profesional en Calamuchita",
+      },
+    ],
+  },
+
+  alternates: {
+    canonical: "https://maxivaz.com.ar",
   },
 };
 
@@ -25,24 +70,55 @@ export default function RootLayout({
 }) {
   const jsonLd = {
     "@context": "https://schema.org",
+
     "@type": "ProfessionalService",
-    "name": "Maxivaz Web Studio",
-    "image": "https://maxivaz.com.ar/p.png",
+
+    name: "Maxivaz",
+
+    image: "https://maxivaz.com.ar/p.png",
+
     "@id": "https://maxivaz.com.ar/#website",
-    "url": "https://maxivaz.com.ar",
-    "priceRange": "$$",
-    "telephone": "+5493546431626", // Agregado para SEO local
-    "address": {
+
+    url: "https://maxivaz.com.ar",
+
+    telephone: "+5493546431626",
+
+    priceRange: "$$",
+
+    description:
+      "Servicio profesional de diseño y desarrollo web en Córdoba y Calamuchita.",
+
+    serviceType: [
+      "Desarrollo Web",
+      "Diseño Web",
+      "SEO",
+      "Landing Pages",
+      "Tiendas Online",
+    ],
+
+    address: {
       "@type": "PostalAddress",
-      "addressLocality": "Calamuchita",
-      "addressRegion": "Córdoba",
-      "addressCountry": "AR"
+      addressLocality: "Calamuchita",
+      addressRegion: "Córdoba",
+      addressCountry: "AR",
     },
-    "areaServed": [
-      { "@type": "AdministrativeArea", "name": "Valle de Calamuchita" },
-      { "@type": "AdministrativeArea", "name": "Córdoba" },
-      { "@type": "AdministrativeArea", "name": "Argentina" }
-    ]
+
+    areaServed: [
+      {
+        "@type": "AdministrativeArea",
+        name: "Valle de Calamuchita",
+      },
+
+      {
+        "@type": "AdministrativeArea",
+        name: "Córdoba",
+      },
+
+      {
+        "@type": "AdministrativeArea",
+        name: "Argentina",
+      },
+    ],
   };
 
   return (
@@ -52,7 +128,11 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               try {
-                if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                if (
+                  localStorage.theme === 'dark' ||
+                  (!('theme' in localStorage) &&
+                    window.matchMedia('(prefers-color-scheme: dark)').matches)
+                ) {
                   document.documentElement.classList.add('dark');
                 } else {
                   document.documentElement.classList.remove('dark');
@@ -62,6 +142,7 @@ export default function RootLayout({
           }}
         />
       </head>
+
       <body
         className="
           overflow-x-hidden
@@ -73,11 +154,16 @@ export default function RootLayout({
       >
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd),
+          }}
         />
+
         <ThemeProvider>
           <FloatingNav />
+
           <ThemeToggle />
+
           <main className="w-full overflow-x-hidden">
             {children}
           </main>

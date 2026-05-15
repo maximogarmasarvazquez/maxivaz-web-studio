@@ -133,7 +133,8 @@ export default function Hero() {
         </h1>
 
         <p className="mt-10 max-w-3xl text-base leading-relaxed sm:text-lg md:text-[22px] text-slate-700 dark:text-zinc-300">
-          Creamos experiencias visuales personalizadas y funcionales para tu marca, combinando diseño web moderno con arte digital único.
+          Creamos experiencias visuales personalizadas y funcionales para tu marca,
+           combinando diseño web moderno con arte digital único.
         </p>
 
         <div className="mt-14 flex flex-col gap-4 sm:flex-row">
