@@ -1,30 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useTheme } from "@/context/themeContext";
 import { Sun, Moon } from "lucide-react";
 
 export default function ThemeToggle() {
   const { isDark, toggleTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  // 🔥 evita mismatch SSR/CSR
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return (
-      <button
-        className="
-          fixed bottom-6 left-6 z-50
-          w-12 h-12 rounded-full
-          bg-white/20 dark:bg-black/30
-          backdrop-blur-md
-        "
-      />
-    );
-  }
 
   return (
     <button
@@ -46,6 +26,7 @@ export default function ThemeToggle() {
         shadow-lg
       "
     >
+      {/* 🔥 NO mounted guard necesario */}
       {isDark ? (
         <Sun className="w-5 h-5 text-yellow-400" />
       ) : (
