@@ -73,11 +73,11 @@ export default function About() {
 
           <div className="space-y-4 text-zinc-600 dark:text-zinc-400 text-lg leading-relaxed">
             <p>
-              Soy desarrollador web especializado en crear sitios modernos,
+              Equipo de desarrollo web especializado en crear sitios modernos,
               rápidos y optimizados para negocios que quieren crecer online.
             </p>
             <p>
-              No solo diseño páginas web: desarrollo experiencias digitales
+              No solo diseñamos páginas web: desarrollamos experiencias digitales
               enfocadas en conversión, rendimiento y posicionamiento en Google.
             </p>
           </div>
