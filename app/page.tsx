@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-
 import Hero from "@/components/sections/Hero";
 import Services from "@/components/sections/Services";
 import Benefits from "@/components/sections/Benefits";
@@ -7,42 +6,32 @@ import Portfolio from "@/components/sections/Portfolio";
 import Contact from "@/components/sections/Contact";
 import CTA from "@/components/sections/CTA";
 import About from "@/components/sections/About";
-
 import PageTransition from "@/components/pageTransition";
 
 export const metadata: Metadata = {
-  title:
-    "Páginas Web en Calamuchita y Córdoba que Consiguen Clientes | Maxivaz Web Studio",
-
+  // Ponemos las palabras de servicio AL PRINCIPIO del título para ganarle a la competencia local
+  title: "Diseño y Desarrollo Web en Córdoba y Calamuchita",
   description:
-    "Creamos páginas web profesionales en Calamuchita y Córdoba diseñadas para atraer clientes, vender más y mejorar la presencia online de tu negocio.",
-
-  keywords: [
-    "pagina web calamuchita",
-    "pagina web villa general belgrano",
-    "diseño web cordoba",
-    "desarrollo web argentina",
-    "web para negocios",
-    "pagina web que vende",
-    "ecommerce cordoba",
-    "react developer argentina",
-    "next js developer",
-  ],
-
+    "Creamos páginas web profesionales, rápidas y optimizadas para Google (SEO) en Córdoba y el Valle de Calamuchita. Impulsá las ventas de tu negocio con Next.js.",
   openGraph: {
-    title:
-      "Páginas Web en Calamuchita y Córdoba que Atraen Clientes | Maxivaz",
-
+    title: "Diseño y Desarrollo Web en Córdoba y Calamuchita | Maxivaz Web Studio",
     description:
-      "Diseño y desarrollo de sitios web modernos enfocados en ventas y crecimiento de negocios locales.",
-
+      "Sitios web modernos de alto rendimiento enfocados en atraer clientes y potenciar negocios locales en Córdoba y Calamuchita.",
     url: "https://maxivaz.com.ar",
-
     siteName: "Maxivaz Web Studio",
-
     locale: "es_AR",
-
     type: "website",
+    images: [
+      {
+        url: "/p.png",
+        width: 1200,
+        height: 630,
+        alt: "Maxivaz Web Studio - Desarrollo Web Profesional",
+      },
+    ],
+  },
+  alternates: {
+    canonical: "https://maxivaz.com.ar",
   },
 };
 

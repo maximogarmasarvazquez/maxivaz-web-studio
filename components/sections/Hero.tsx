@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
 import { useTheme } from "@/context/themeContext";
 
@@ -19,6 +19,10 @@ type PaintParticle = {
   blur: number;
 };
 
+// Suscriptor seguro para saber si estamos en el cliente
+const emptySubscribe = () => () => {};
+const useIsMounted = () => useSyncExternalStore(emptySubscribe, () => true, () => false);
+
 export default function Hero() {
   const { isDark } = useTheme();
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -27,6 +31,8 @@ export default function Hero() {
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [particles, setParticles] = useState<PaintParticle[]>([]);
   const [isMobile, setIsMobile] = useState(false);
+  
+  const mounted = useIsMounted();
 
   // detect mobile
   useEffect(() => {
@@ -38,8 +44,7 @@ export default function Hero() {
   }, []);
 
   useEffect(() => {
-    // ❌ MOBILE: no mouse effect
-    if (isMobile) return;
+    if (isMobile || !mounted) return;
 
     let ticking = false;
 
@@ -85,19 +90,28 @@ export default function Hero() {
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, [isMobile, isDark]);
+  }, [isMobile, isDark, mounted]);
+
+  const whatsappClasses = mounted && isDark 
+    ? "bg-white text-black" 
+    : "bg-[#050816] text-white shadow-[0_10px_40px_rgba(37,99,235,0.25)]";
+
+  const portfolioClasses = mounted && isDark 
+    ? "border border-white/10 hover:bg-white hover:text-black" 
+    : "border border-blue-200/60 bg-white/35 text-slate-900 shadow-lg shadow-blue-500/5 hover:bg-white/70";
 
   return (
     <section id="hero"
       ref={sectionRef}
       className="relative isolate min-h-screen overflow-hidden bg-white dark:bg-[#0B0B0B]"
     >
-      {/* 🔥 SIEMPRE activo (fondo líquido) */}
-      <LiquidBackground
-        mouse={isMobile ? { x: 0, y: 0 } : mouse}
-        particles={isMobile ? [] : particles}
-        isDark={isDark}
-      />
+      {mounted && (
+        <LiquidBackground
+          mouse={isMobile ? { x: 0, y: 0 } : mouse}
+          particles={isMobile ? [] : particles}
+          isDark={isDark}
+        />
+      )}
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 text-center">
 
@@ -119,46 +133,23 @@ export default function Hero() {
         </h1>
 
         <p className="mt-10 max-w-3xl text-base leading-relaxed sm:text-lg md:text-[22px] text-slate-700 dark:text-zinc-300">
-          Creamos experiencias visuales personalizadas y funcionales para tu marca, combinando diseño web moderno con arte digital
-           único.
+          Creamos experiencias visuales personalizadas y funcionales para tu marca, combinando diseño web moderno con arte digital único.
         </p>
 
-        {/* BUTTONS */}
         <div className="mt-14 flex flex-col gap-4 sm:flex-row">
-
-          {/* WHATSAPP (HOVER intacto como lo tenías) */}
           <a
             href="https://wa.me/5493546431626"
             target="_blank"
-            className={`
-              group relative overflow-hidden rounded-2xl px-9 py-4 font-semibold
-              transition-all duration-300 hover:scale-[1.04]
-              ${isDark ? "bg-white text-black" : "bg-[#050816] text-white shadow-[0_10px_40px_rgba(37,99,235,0.25)]"}
-            `}
+            rel="noopener noreferrer"
+            className={`group relative overflow-hidden rounded-2xl px-9 py-4 font-semibold transition-all duration-300 hover:scale-[1.04] ${whatsappClasses}`}
           >
             <span className="relative z-10">WhatsApp</span>
-
-            <div
-              className="
-                absolute inset-0 translate-y-full
-                bg-gradient-to-r from-blue-600 via-indigo-500 to-violet-500
-                transition-transform duration-500
-                group-hover:translate-y-0
-              "
-            />
+            <div className="absolute inset-0 translate-y-full bg-gradient-to-r from-blue-600 via-indigo-500 to-violet-500 transition-transform duration-500 group-hover:translate-y-0" />
           </a>
 
-          {/* PORTFOLIO */}
           <Link
             href="#portfolio"
-            className={`
-              rounded-2xl px-9 py-4 font-medium transition-all duration-300 backdrop-blur-xl hover:scale-[1.03]
-              ${
-                isDark
-                  ? "border border-white/10 hover:bg-white hover:text-black"
-                  : "border border-blue-200/60 bg-white/35 text-slate-900 shadow-lg shadow-blue-500/5 hover:bg-white/70"
-              }
-            `}
+            className={`rounded-2xl px-9 py-4 font-medium transition-all duration-300 backdrop-blur-xl hover:scale-[1.03] ${portfolioClasses}`}
           >
             Ver trabajos
           </Link>

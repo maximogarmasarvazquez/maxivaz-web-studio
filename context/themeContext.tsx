@@ -3,7 +3,6 @@
 import {
   createContext,
   useContext,
-  useEffect,
   useMemo,
   useState,
   ReactNode,
@@ -16,41 +15,39 @@ type ThemeContextType = {
   isDark: boolean;
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
-  mounted: boolean;
 };
 
 const ThemeContext = createContext<ThemeContextType | null>(null);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  // 1. Inicializamos el tema leyendo directamente de localStorage si estamos en el cliente.
-  // Esto evita tener que actualizar el estado después con un useEffect.
+  // Inicialización limpia desde el HTML ya modificado por el script del Layout
   const [theme, setThemeState] = useState<Theme>(() => {
     if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("theme") as Theme | null;
-      return saved ?? "dark";
+      return document.documentElement.classList.contains("dark") ? "dark" : "light";
     }
     return "dark";
   });
 
-  // 2. En lugar de un estado que cause renders en cascada, calculamos 'mounted' en vivo.
-  // Si 'window' existe, significa que ya estamos ejecutando código en el navegador del cliente.
-  const mounted = typeof window !== "undefined";
   const isDark = theme === "dark";
 
-  // 3. Este efecto SOLO corre cuando el usuario cambia el tema manualmente (hace click)
-  // No corre al montarse porque no tiene dependencias vacías, solo reacciona a cambios.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+  // Cambiamos el tema modificando directamente el DOM de forma síncrona ante la acción del usuario
+  const setTheme = (newTheme: Theme) => {
+    setThemeState(newTheme);
+    if (typeof window !== "undefined") {
+      const root = document.documentElement;
+      if (newTheme === "dark") {
+        root.classList.add("dark");
+      } else {
+        root.classList.remove("dark");
+      }
+      localStorage.setItem("theme", newTheme);
+    }
+  };
 
-    const root = document.documentElement;
-    root.classList.toggle("dark", isDark);
-    localStorage.setItem("theme", theme);
-  }, [theme, isDark]);
-
-  const setTheme = (newTheme: Theme) => setThemeState(newTheme);
-
-  const toggleTheme = () =>
-    setThemeState((prev) => (prev === "dark" ? "light" : "dark"));
+  const toggleTheme = () => {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+    setTheme(nextTheme);
+  };
 
   const value = useMemo(
     () => ({
@@ -58,9 +55,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       isDark,
       setTheme,
       toggleTheme,
-      mounted,
     }),
-    [theme, isDark, mounted]
+    [theme, isDark]
   );
 
   return (
