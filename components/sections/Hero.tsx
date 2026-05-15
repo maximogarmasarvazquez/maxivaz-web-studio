@@ -22,59 +22,85 @@ type PaintParticle = {
 export default function Hero() {
   const { isDark } = useTheme();
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [mounted, setMounted] = useState(false);
+  const lastPos = useRef({ x: 0, y: 0 });
+
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [particles, setParticles] = useState<PaintParticle[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
 
+  // detect mobile
   useEffect(() => {
-    const timeoutId = window.setTimeout(() => setMounted(true), 0);
-    return () => window.clearTimeout(timeoutId);
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
+    // ❌ MOBILE: no mouse effect
+    if (isMobile) return;
 
-    const handleMove = (e: MouseEvent) => {
-      setMouse({
-        x: (e.clientX / window.innerWidth - 0.5) * 50,
-        y: (e.clientY / window.innerHeight - 0.5) * 50,
+    let ticking = false;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (ticking) return;
+      ticking = true;
+
+      requestAnimationFrame(() => {
+        ticking = false;
+
+        setMouse({
+          x: (e.clientX / window.innerWidth - 0.5) * 30,
+          y: (e.clientY / window.innerHeight - 0.5) * 30,
+        });
+
+        if (!sectionRef.current) return;
+
+        const dx = e.clientX - lastPos.current.x;
+        const dy = e.clientY - lastPos.current.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < 35) return;
+
+        lastPos.current = { x: e.clientX, y: e.clientY };
+
+        const rect = sectionRef.current.getBoundingClientRect();
+
+        const newParticle: PaintParticle = {
+          id: `${Date.now()}-${Math.random()}`,
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top,
+          size: Math.random() * 35 + 20,
+          opacity: isDark ? 0.18 : 0.3,
+          blur: Math.random() * 10 + 5,
+        };
+
+        setParticles((prev) => [...prev.slice(-20), newParticle]);
       });
-
-      if (!sectionRef.current) return;
-
-      const rect = sectionRef.current.getBoundingClientRect();
-
-      const newParticle: PaintParticle = {
-        id: Math.random().toString(),
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-        size: Math.random() * 45 + 25,
-        opacity: isDark ? 0.25 : 0.45,
-        blur: Math.random() * 15 + 10,
-      };
-
-      setParticles((prev) => [...prev.slice(-40), newParticle]);
     };
 
-    window.addEventListener("mousemove", handleMove);
-    return () => window.removeEventListener("mousemove", handleMove);
-  }, [mounted, isDark]);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
-  if (!mounted) {
-    return <section id="hero" className="min-h-screen w-full bg-[#0B0B0B]" />;
-  }
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [isMobile, isDark]);
 
   return (
     <section
       ref={sectionRef}
-      id="hero"
-      className="relative isolate min-h-screen overflow-hidden transition-colors duration-700 bg-white dark:bg-[#0B0B0B]"
+      className="relative isolate min-h-screen overflow-hidden bg-white dark:bg-[#0B0B0B]"
     >
-      <LiquidBackground mouse={mouse} particles={particles} isDark={isDark} />
+      {/* 🔥 SIEMPRE activo (fondo líquido) */}
+      <LiquidBackground
+        mouse={isMobile ? { x: 0, y: 0 } : mouse}
+        particles={isMobile ? [] : particles}
+        isDark={isDark}
+      />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 text-center">
 
-        {/* BADGE */}
         <div className="mb-10 inline-flex items-center gap-2 rounded-full border px-5 py-2.5 backdrop-blur-2xl border-blue-200/60 bg-white/30 dark:border-white/10 dark:bg-white/[0.04]">
           <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
           <span className="text-[11px] font-medium uppercase tracking-[0.35em] text-blue-950/70 dark:text-zinc-400">
@@ -82,23 +108,16 @@ export default function Hero() {
           </span>
         </div>
 
-        {/* TITLE (FIX G CUT + “nacho” visual) */}
         <h1 className="text-5xl font-black leading-[1.05] tracking-[-0.04em] sm:text-6xl md:text-7xl lg:text-[96px] pb-2">
           <span className="text-[#050816] dark:text-white">
             Desarrollo web
           </span>
 
-          <span className="
-            mt-2 block leading-[1.15] pb-3
-            bg-gradient-to-r bg-clip-text text-transparent
-            from-fuchsia-600 via-violet-500 to-blue-600
-            dark:from-violet-400 dark:via-fuchsia-500 dark:to-cyan-400
-          ">
+          <span className="mt-2 block leading-[1.15] pb-3 bg-gradient-to-r bg-clip-text text-transparent from-fuchsia-600 via-violet-500 to-blue-600 dark:from-violet-400 dark:via-fuchsia-500 dark:to-cyan-400">
             & Arte digital
           </span>
         </h1>
 
-        {/* DESCRIPTION */}
         <p className="mt-10 max-w-3xl text-base leading-relaxed sm:text-lg md:text-[22px] text-slate-700 dark:text-zinc-300">
           Creamos experiencias visuales personalizadas de alto impacto, diseñadas para cautivar a tu audiencia.
         </p>
