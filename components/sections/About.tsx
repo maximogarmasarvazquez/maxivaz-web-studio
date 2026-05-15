@@ -13,7 +13,7 @@ export default function About() {
       aria-label="Sobre Maxivaz Web Studio"
       className="relative py-32 px-6 border-t transition-colors duration-700
       border-black/5 dark:border-white/5
-      bg-[#d7d7d7] dark:bg-[#100f0f]
+      bg-[#fefcfc] dark:bg-[#100f0f]
       text-black dark:text-white
       overflow-hidden"
     >
@@ -43,7 +43,7 @@ export default function About() {
           ${
             isDark
               ? "bg-fuchsia-600/5 opacity-20"
-              : "bg-fuchsia-100/40 opacity-50"
+              : "bg-slate-100 opacity-50"
           }`}
         />
 

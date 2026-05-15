@@ -5,7 +5,7 @@ export default function CTA() {
     <section
       className="
         relative py-28 px-6 text-center
-        bg-white dark:bg-[#0B0B0B]
+        bg-[#d1ddff] dark:bg-[#0B0B0B]
         overflow-hidden
         transition-colors duration-500
       "

@@ -1,7 +1,6 @@
 "use client";
 
 import { Layout, Globe, ShoppingCart } from "lucide-react";
-import { useTheme } from "next-themes";
 
 const services = [
   {
@@ -32,7 +31,7 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="relative py-32 px-6 transition-colors duration-700 bg-[#d7d7d7] dark:bg-[#100f0f] text-black dark:text-white overflow-hidden"
+      className="relative py-32 px-6 transition-colors duration-700 bg-[#f4eafb] dark:bg-[#160c23] text-black dark:text-white overflow-hidden"
     >
       <div className="max-w-6xl mx-auto relative z-10">
         <header className="text-center mb-20">
