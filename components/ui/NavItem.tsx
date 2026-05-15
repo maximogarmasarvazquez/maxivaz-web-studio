@@ -1,3 +1,16 @@
+"use client";
+
+import React, { isValidElement, cloneElement } from "react";
+
+interface NavItemProps {
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+  onClick?: () => void;
+  vertical?: boolean;
+  isActive?: boolean;
+}
+
 export default function NavItem({
   href,
   icon,
@@ -5,51 +18,67 @@ export default function NavItem({
   onClick,
   vertical = false,
   isActive = false,
-}: {
-  href: string;
-  icon: React.ReactNode;
-  label: string;
-  onClick?: () => void;
-  vertical?: boolean;
-  isActive?: boolean;
-}) {
+}: NavItemProps) {
+  const renderIcon = () => {
+    if (isValidElement(icon)) {
+      return cloneElement(
+        icon as React.ReactElement<{
+          size?: number;
+          strokeWidth?: number;
+          className?: string;
+        }>,
+        {
+          size: 22,
+          strokeWidth: isActive ? 2.5 : 2,
+          className: "transition-all duration-500",
+        }
+      );
+    }
+    return icon;
+  };
+
   return (
     <a
       href={href}
       onClick={onClick}
       className={`
-        group flex w-full
-        ${vertical ? "flex-col items-center gap-2" : "items-center gap-4"}
-        text-sm
+        group flex w-full transition-all duration-300
+        ${
+          vertical
+            ? "flex-row-reverse justify-end items-center gap-4 p-4 rounded-2xl bg-black/5 dark:bg-white/5"
+            : "items-center gap-4"
+        }
+        text-sm cursor-pointer
       `}
     >
       {/* ICON */}
       <div
         className={`
-          w-12 h-12 flex items-center justify-center rounded-xl
-          transition
-
+          shrink-0 w-11 h-11 flex items-center justify-center rounded-xl
+          transition-all duration-500
           ${
             isActive
-              ? "bg-black text-white dark:bg-white dark:text-black shadow-md"
-              : "bg-black/5 text-black/70 hover:bg-black/10 hover:text-black dark:bg-white/10 dark:text-white/70 dark:hover:bg-white/20 dark:hover:text-white"
+              ? "text-blue-500 scale-110"
+              : "text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white"
           }
         `}
       >
-        {icon}
+        {renderIcon()}
       </div>
 
       {/* LABEL */}
       <span
         className={`
-          flex-1   /* 🔥 ocupa espacio fijo */
-          whitespace-nowrap   /* 🔥 evita salto */
-          transition-colors
-
+          whitespace-nowrap transition-all duration-500 ease-out
+          ${
+            vertical
+              ? "text-base font-semibold"
+              : "text-sm opacity-0 translate-x-[-10px] group-hover:opacity-100 group-hover:translate-x-0"
+          }
           ${
             isActive
-              ? "text-black dark:text-white font-medium"
-              : "text-black/60 dark:text-white/60 group-hover:text-black dark:group-hover:text-white"
+              ? "text-blue-500 font-bold"
+              : "text-slate-600 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white"
           }
         `}
       >

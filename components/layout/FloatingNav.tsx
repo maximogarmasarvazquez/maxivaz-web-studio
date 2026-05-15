@@ -2,58 +2,41 @@
 
 import { useEffect, useRef, useState } from "react";
 import NavItem from "@/components/ui/NavItem";
-import {
-  Home,
-  Layers,
-  Star,
-  Briefcase,
-  Mail,
-  Menu,
-  X,
-} from "lucide-react";
+import { Home, Layers, Star, Briefcase, Mail, Menu, X } from "lucide-react";
 
 const sections = ["hero", "services", "benefits", "portfolio", "contact"] as const;
-
 type SectionId = (typeof sections)[number];
 
 export default function FloatingNav() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<SectionId>("hero");
-
   const containerRef = useRef<HTMLDivElement | null>(null);
   const indicatorRef = useRef<HTMLDivElement | null>(null);
 
-  // 🔥 SCROLL SPY OPTIMIZADO
   useEffect(() => {
     let ticking = false;
 
     const handleScroll = () => {
       if (ticking) return;
-
       ticking = true;
 
       requestAnimationFrame(() => {
         const windowHeight = window.innerHeight;
         const scrollMiddle = window.scrollY + windowHeight / 2;
 
-        if (
-          window.scrollY + windowHeight >=
-          document.body.scrollHeight - 50
-        ) {
+        if (window.scrollY + windowHeight >= document.body.scrollHeight - 50) {
           setActive("contact");
-          ticking = false;
-          return;
-        }
+        } else {
+          for (const id of sections) {
+            const el = document.getElementById(id);
+            if (!el) continue;
 
-        for (const id of sections) {
-          const el = document.getElementById(id);
-          if (!el) continue;
-
-          const top = el.offsetTop;
-          const bottom = top + el.offsetHeight;
-
-          if (scrollMiddle >= top && scrollMiddle <= bottom) {
-            setActive((prev) => (prev === id ? prev : id));
+            if (
+              scrollMiddle >= el.offsetTop &&
+              scrollMiddle <= el.offsetTop + el.offsetHeight
+            ) {
+              setActive(id);
+            }
           }
         }
 
@@ -62,108 +45,117 @@ export default function FloatingNav() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 🔥 INDICADOR MÁS ESTABLE
   useEffect(() => {
-    const container = containerRef.current;
     const activeEl = document.querySelector(
       `[data-nav="${active}"]`
     ) as HTMLElement | null;
+
     const indicator = indicatorRef.current;
+    if (!activeEl || !indicator) return;
 
-    if (!container || !activeEl || !indicator) return;
-
-    const offset = activeEl.offsetTop;
-
-    indicator.style.transform = `translate3d(0, ${offset}px, 0)`;
+    indicator.style.transform = `translate3d(0, ${activeEl.offsetTop}px, 0)`;
     indicator.style.height = `${activeEl.offsetHeight}px`;
   }, [active]);
 
   return (
     <>
       {/* 🖥️ DESKTOP NAV */}
-      <nav className="hidden md:block fixed right-10 top-1/2 -translate-y-1/2 z-50">
-        <div className="relative">
-
-          {/* BACKGROUND */}
-          <div className="absolute inset-0 rounded-3xl bg-white/20 dark:bg-black/20 backdrop-blur-3xl scale-110 opacity-60" />
-
-          {/* CONTAINER */}
+      <nav className="hidden md:block fixed right-10 top-1/2 -translate-y-1/2 z-50 group">
+        <div
+          ref={containerRef}
+          className="
+            relative z-20 flex flex-col gap-4 px-3 py-6 rounded-[2.5rem]
+            backdrop-blur-3xl border transition-all duration-500
+            bg-white/70 border-white/40 shadow-xl
+            dark:bg-black/40 dark:border-white/10
+            w-[72px] hover:w-[190px] overflow-hidden
+          "
+        >
+          {/* INDICADOR BLANCO */}
           <div
-            ref={containerRef}
+            ref={indicatorRef}
             className="
-              relative z-20
-              flex flex-col gap-6 px-4 py-6 rounded-3xl
-              backdrop-blur-3xl
-              bg-white/50 dark:bg-black/30
-              border border-white/20 dark:border-white/10
-              shadow-2xl
-              overflow-hidden
-              w-[170px]
+              absolute left-2 right-2 rounded-2xl pointer-events-none z-10 top-0
+              transition-all duration-500 ease-out
+              bg-white/10 dark:bg-white/10
+              border-r-2 border-white/60 dark:border-white/40
             "
-          >
-            {/* INDICADOR */}
-            <div
-              ref={indicatorRef}
-              className="
-                absolute left-2 right-2 rounded-2xl
-                bg-black/10 dark:bg-white/10
-                blur-md
-                pointer-events-none z-10 top-0
-                transition-transform duration-300 ease-out
-                will-change-transform
-              "
-            />
+          />
 
-            <div className="relative z-20" data-nav="hero">
-              <NavItem href="#hero" icon={<Home className="w-5 h-5" />} label="Inicio" isActive={active === "hero"} />
+          {sections.map((id) => (
+            <div key={id} className="relative z-20" data-nav={id}>
+              <NavItem
+                href={`#${id}`}
+                icon={
+                  id === "hero" ? (
+                    <Home />
+                  ) : id === "services" ? (
+                    <Layers />
+                  ) : id === "benefits" ? (
+                    <Star />
+                  ) : id === "portfolio" ? (
+                    <Briefcase />
+                  ) : (
+                    <Mail />
+                  )
+                }
+                label={id.charAt(0).toUpperCase() + id.slice(1)}
+                isActive={active === id}
+              />
             </div>
-
-            <div className="relative z-20" data-nav="services">
-              <NavItem href="#services" icon={<Layers className="w-5 h-5" />} label="Servicios" isActive={active === "services"} />
-            </div>
-
-            <div className="relative z-20" data-nav="benefits">
-              <NavItem href="#benefits" icon={<Star className="w-5 h-5" />} label="Beneficios" isActive={active === "benefits"} />
-            </div>
-
-            <div className="relative z-20" data-nav="portfolio">
-              <NavItem href="#portfolio" icon={<Briefcase className="w-5 h-5" />} label="Trabajos" isActive={active === "portfolio"} />
-            </div>
-
-            <div className="relative z-20" data-nav="contact">
-              <NavItem href="#contact" icon={<Mail className="w-5 h-5" />} label="Contacto" isActive={active === "contact"} />
-            </div>
-          </div>
+          ))}
         </div>
       </nav>
 
       {/* 📱 MOBILE BUTTON */}
       <button
         onClick={() => setOpen(!open)}
-        className="md:hidden fixed bottom-6 right-6 z-50 p-4 rounded-full shadow-lg bg-white text-black dark:bg-black dark:text-white"
+        className="md:hidden fixed bottom-6 right-6 z-[70] p-4 rounded-2xl shadow-2xl bg-white text-black dark:bg-white dark:text-black"
       >
         {open ? <X /> : <Menu />}
       </button>
 
       {/* 📱 MOBILE MENU */}
-      {open && (
-        <div className="md:hidden fixed inset-0 z-40 flex items-center justify-center px-4 backdrop-blur-2xl bg-white/40 dark:bg-black/60">
-          <div className="w-full max-w-xs flex flex-col items-center gap-6 px-6 py-8 rounded-3xl backdrop-blur-2xl bg-white/70 dark:bg-black/40 border border-white/20 dark:border-white/10 shadow-2xl">
+      <div
+        className={`
+        md:hidden fixed inset-0 z-[60] transition-all duration-500
+        ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
+      `}
+      >
+        <div
+          className="absolute inset-0 bg-white/80 dark:bg-black/90 backdrop-blur-2xl"
+          onClick={() => setOpen(false)}
+        />
 
-            <NavItem href="#hero" icon={<Home className="w-6 h-6" />} label="Inicio" vertical isActive={active === "hero"} onClick={() => setOpen(false)} />
-            <NavItem href="#services" icon={<Layers className="w-6 h-6" />} label="Servicios" vertical isActive={active === "services"} onClick={() => setOpen(false)} />
-            <NavItem href="#benefits" icon={<Star className="w-6 h-6" />} label="Beneficios" vertical isActive={active === "benefits"} onClick={() => setOpen(false)} />
-            <NavItem href="#portfolio" icon={<Briefcase className="w-6 h-6" />} label="Trabajos" vertical isActive={active === "portfolio"} onClick={() => setOpen(false)} />
-            <NavItem href="#contact" icon={<Mail className="w-6 h-6" />} label="Contacto" vertical isActive={active === "contact"} onClick={() => setOpen(false)} />
-
-          </div>
+        <div className="absolute bottom-24 right-6 left-6 flex flex-col gap-3">
+          {sections.map((id) => (
+            <NavItem
+              key={id}
+              href={`#${id}`}
+              icon={
+                id === "hero" ? (
+                  <Home />
+                ) : id === "services" ? (
+                  <Layers />
+                ) : id === "benefits" ? (
+                  <Star />
+                ) : id === "portfolio" ? (
+                  <Briefcase />
+                ) : (
+                  <Mail />
+                )
+              }
+              label={id.charAt(0).toUpperCase() + id.slice(1)}
+              vertical
+              isActive={active === id}
+              onClick={() => setOpen(false)}
+            />
+          ))}
         </div>
-      )}
+      </div>
     </>
   );
 }
