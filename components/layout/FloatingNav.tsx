@@ -10,9 +10,11 @@ type SectionId = (typeof sections)[number];
 export default function FloatingNav() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<SectionId>("hero");
+
   const containerRef = useRef<HTMLDivElement | null>(null);
   const indicatorRef = useRef<HTMLDivElement | null>(null);
 
+  // 🔥 SCROLL DETECTION FIXED
   useEffect(() => {
     let ticking = false;
 
@@ -21,25 +23,24 @@ export default function FloatingNav() {
       ticking = true;
 
       requestAnimationFrame(() => {
-        const windowHeight = window.innerHeight;
-        const scrollMiddle = window.scrollY + windowHeight / 2;
+        const scrollY = window.scrollY;
+        let current: SectionId = "hero";
 
-        if (window.scrollY + windowHeight >= document.body.scrollHeight - 50) {
-          setActive("contact");
-        } else {
-          for (const id of sections) {
-            const el = document.getElementById(id);
-            if (!el) continue;
+        for (const id of sections) {
+          const el = document.getElementById(id);
+          if (!el) continue;
 
-            if (
-              scrollMiddle >= el.offsetTop &&
-              scrollMiddle <= el.offsetTop + el.offsetHeight
-            ) {
-              setActive(id);
-            }
+          const top = el.offsetTop;
+          const bottom = top + el.offsetHeight;
+
+          // 👇 pequeño offset para mejor precisión
+          if (scrollY + 120 >= top && scrollY + 120 < bottom) {
+            current = id;
+            break;
           }
         }
 
+        setActive(current);
         ticking = false;
       });
     };
@@ -48,15 +49,20 @@ export default function FloatingNav() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // 🔥 INDICATOR FIXED RELATIVE TO CONTAINER
   useEffect(() => {
     const activeEl = document.querySelector(
       `[data-nav="${active}"]`
     ) as HTMLElement | null;
 
+    const container = containerRef.current;
     const indicator = indicatorRef.current;
-    if (!activeEl || !indicator) return;
 
-    indicator.style.transform = `translate3d(0, ${activeEl.offsetTop}px, 0)`;
+    if (!activeEl || !container || !indicator) return;
+
+    const offset = activeEl.offsetTop - container.offsetTop;
+
+    indicator.style.transform = `translate3d(0, ${offset}px, 0)`;
     indicator.style.height = `${activeEl.offsetHeight}px`;
   }, [active]);
 
@@ -74,7 +80,7 @@ export default function FloatingNav() {
             w-[72px] hover:w-[190px] overflow-hidden
           "
         >
-          {/* INDICADOR BLANCO */}
+          {/* INDICADOR */}
           <div
             ref={indicatorRef}
             className="
@@ -104,6 +110,7 @@ export default function FloatingNav() {
                 }
                 label={id.charAt(0).toUpperCase() + id.slice(1)}
                 isActive={active === id}
+                onClick={() => setActive(id)} // 🔥 FIX UX CLICK
               />
             </div>
           ))}
@@ -121,9 +128,9 @@ export default function FloatingNav() {
       {/* 📱 MOBILE MENU */}
       <div
         className={`
-        md:hidden fixed inset-0 z-[60] transition-all duration-500
-        ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
-      `}
+          md:hidden fixed inset-0 z-[60] transition-all duration-500
+          ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
+        `}
       >
         <div
           className="absolute inset-0 bg-white/80 dark:bg-black/90 backdrop-blur-2xl"
@@ -151,7 +158,10 @@ export default function FloatingNav() {
               label={id.charAt(0).toUpperCase() + id.slice(1)}
               vertical
               isActive={active === id}
-              onClick={() => setOpen(false)}
+              onClick={() => {
+                setActive(id);
+                setOpen(false);
+              }}
             />
           ))}
         </div>
