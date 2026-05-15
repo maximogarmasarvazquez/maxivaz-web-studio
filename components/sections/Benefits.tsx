@@ -1,7 +1,7 @@
 "use client";
 
 import { Zap, Smartphone, Palette, TrendingUp } from "lucide-react";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/context/themeContext";
 
 const items = [
   {
@@ -35,8 +35,7 @@ const items = [
 ];
 
 export default function Benefits() {
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme !== "light";
+  const { isDark } = useTheme();
 
   return (
     <section
@@ -44,11 +43,11 @@ export default function Benefits() {
       className="
         relative py-28 md:py-32 px-6 overflow-hidden
         transition-colors duration-700
-        bg-[#d7d7d7] dark:bg-[#0B0B0B]
+        bg-[#f4f6f8] dark:bg-[#0B0B0B]
         text-black dark:text-white
       "
     >
-      {/* BACKGROUND GRID */}
+      {/* GRID BACKGROUND (FIXED CONTRAST) */}
       <div className="absolute inset-0 pointer-events-none">
         <div
           className={`
@@ -61,8 +60,8 @@ export default function Benefits() {
                   [background-image:linear-gradient(45deg,#fff_25%,transparent_25%,transparent_50%,#fff_50%,#fff_75%,transparent_75%,transparent)]
                 `
                 : `
-                  opacity-100
-                  [background-image:linear-gradient(to_right,rgba(15,23,42,0.12)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.12)_1px,transparent_1px)]
+                  opacity-70
+                  [background-image:linear-gradient(to_right,rgba(15,23,42,0.18)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.18)_1px,transparent_1px)]
                 `
             }
           `}
@@ -96,13 +95,13 @@ export default function Benefits() {
 
                   border border-black/10 dark:border-white/10
 
-                  bg-white/70 dark:bg-white/[0.04]
+                  bg-white/80 dark:bg-white/[0.04]
                   backdrop-blur-md
 
                   transition-all duration-500 ease-out
 
                   hover:-translate-y-2 hover:scale-[1.01]
-                  hover:bg-white/90 dark:hover:bg-white/[0.08]
+                  hover:bg-white dark:hover:bg-white/[0.08]
 
                   hover:shadow-xl
                 "
@@ -151,7 +150,7 @@ export default function Benefits() {
                   </p>
                 </div>
 
-                {/* INDICADOR */}
+                {/* INDICATOR */}
                 <div
                   className="
                     absolute bottom-5 right-6

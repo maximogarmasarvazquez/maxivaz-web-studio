@@ -3,10 +3,10 @@
 import {
   createContext,
   useContext,
+  useEffect,
   useMemo,
   useState,
   ReactNode,
-  useEffect,
 } from "react";
 
 type Theme = "light" | "dark";
@@ -14,53 +14,49 @@ type Theme = "light" | "dark";
 type ThemeContextType = {
   theme: Theme;
   isDark: boolean;
+  setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
 };
 
 const ThemeContext = createContext<ThemeContextType | null>(null);
 
-// 🔥 LÓGICA DE INICIO: Prioridad al Dark
+// 🔥 inicialización segura
 function getInitialTheme(): Theme {
-  // En el servidor (SSR) siempre devolvemos "dark" para coincidir con el layout
   if (typeof window === "undefined") return "dark";
 
   const saved = localStorage.getItem("theme") as Theme | null;
-  
-  // Si el usuario ya eligió "light" antes, lo respetamos. 
-  // Pero si es nuevo o no hay nada, devolvemos "dark".
-  return saved === "light" ? "light" : "dark";
+  return saved ?? "dark";
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => getInitialTheme());
+  const [theme, setThemeState] = useState<Theme>(() => getInitialTheme());
 
-  // Sincronización inicial de la clase CSS al montar el componente
+  const isDark = theme === "dark";
+
+  // 🔥 sincroniza DOM + localStorage
   useEffect(() => {
-    const root = window.document.documentElement;
-    if (theme === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-  }, []);
+    const root = document.documentElement;
+
+    root.classList.toggle("dark", isDark);
+    localStorage.setItem("theme", theme);
+  }, [theme, isDark]);
+
+  const setTheme = (newTheme: Theme) => {
+    setThemeState(newTheme);
+  };
 
   const toggleTheme = () => {
-    const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-
-    if (typeof window !== "undefined") {
-      localStorage.setItem("theme", next);
-      document.documentElement.classList.toggle("dark", next === "dark");
-    }
+    setThemeState((prev) => (prev === "dark" ? "light" : "dark"));
   };
 
   const value = useMemo(
     () => ({
       theme,
-      isDark: theme === "dark",
+      isDark,
+      setTheme,
       toggleTheme,
     }),
-    [theme]
+    [theme, isDark]
   );
 
   return (

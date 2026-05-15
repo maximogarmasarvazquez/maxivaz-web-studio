@@ -10,12 +10,17 @@ export const metadata: Metadata = {
     default: "Páginas Web que Consiguen Clientes | Maxivaz",
     template: "%s | Maxivaz Web Studio",
   },
-  description: "Desarrollo de páginas web modernas en Calamuchita y Córdoba.",
+  description:
+    "Desarrollo de páginas web modernas en Calamuchita y Córdoba.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="es" className="dark" style={{ colorScheme: "dark" }} suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning>
       <body
         className="
           overflow-x-hidden
@@ -28,7 +33,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider>
           <FloatingNav />
           <ThemeToggle />
-          <main className="w-full overflow-x-hidden">{children}</main>
+          <main className="w-full overflow-x-hidden">
+            {children}
+          </main>
         </ThemeProvider>
       </body>
     </html>
