@@ -128,15 +128,42 @@ export default function Contact() {
               Navegación
             </h4>
 
-            {["Inicio", "Servicios", "Trabajos", "Contacto"].map((item) => (
-              <Link
-                key={item}
-                href={`#${item.toLowerCase()}`}
+               <Link
+                key="Inicio"
+                href="#hero"
                 className="text-zinc-600 dark:text-zinc-500 hover:text-black dark:hover:text-white transition-colors text-sm font-medium"
               >
-                {item}
-              </Link>
-            ))}
+                Inicio
+              </Link>    
+           
+               <Link
+                key="Servicios"
+                href="#services"
+                className="text-zinc-600 dark:text-zinc-500 hover:text-black dark:hover:text-white transition-colors text-sm font-medium"
+              >
+                Servicios
+              </Link> 
+               <Link
+                key="Beneficios"
+                href="#benefits"
+                className="text-zinc-600 dark:text-zinc-500 hover:text-black dark:hover:text-white transition-colors text-sm font-medium"
+              >
+                Beneficios
+              </Link> 
+                 <Link
+                key="Portafolio"
+                href="#portfolio"
+                className="text-zinc-600 dark:text-zinc-500 hover:text-black dark:hover:text-white transition-colors text-sm font-medium"
+              >
+                Portafolio
+              </Link> 
+               <Link
+                key="Contacto"
+                href="#contact"
+                className="text-zinc-600 dark:text-zinc-500 hover:text-black dark:hover:text-white transition-colors text-sm font-medium"
+              >
+                Contacto
+              </Link> 
           </nav>
 
           {/* COPYRIGHT */}

@@ -91,7 +91,7 @@ export default function FloatingNav() {
           <NavItem
             href="#hero"
             icon={<Home />}
-            label="Hero"
+            label="Inicio"
             isActive={active === "hero"}
             onClick={() => handleNavClick("hero")}
           />
@@ -99,7 +99,7 @@ export default function FloatingNav() {
           <NavItem
             href="#services"
             icon={<Layers />}
-            label="Services"
+            label="Servicios"
             isActive={active === "services"}
             onClick={() => handleNavClick("services")}
           />
@@ -107,7 +107,7 @@ export default function FloatingNav() {
           <NavItem
             href="#benefits"
             icon={<Star />}
-            label="Benefits"
+            label="Beneficios"
             isActive={active === "benefits"}
             onClick={() => handleNavClick("benefits")}
           />
@@ -115,7 +115,7 @@ export default function FloatingNav() {
           <NavItem
             href="#portfolio"
             icon={<Briefcase />}
-            label="Portfolio"
+            label="Portafolio"
             isActive={active === "portfolio"}
             onClick={() => handleNavClick("portfolio")}
           />
@@ -123,7 +123,7 @@ export default function FloatingNav() {
           <NavItem
             href="#contact"
             icon={<Mail />}
-            label="Contact"
+            label="Contacto"
             isActive={active === "contact"}
             onClick={() => handleNavClick("contact")}
           />
@@ -155,7 +155,7 @@ export default function FloatingNav() {
           <NavItem
             href="#hero"
             icon={<Home />}
-            label="Hero"
+            label="Inicio"
             vertical
             isActive={active === "hero"}
             onClick={() => handleNavClick("hero")}
@@ -164,7 +164,7 @@ export default function FloatingNav() {
           <NavItem
             href="#services"
             icon={<Layers />}
-            label="Services"
+            label="Servicios"
             vertical
             isActive={active === "services"}
             onClick={() => handleNavClick("services")}
@@ -173,7 +173,7 @@ export default function FloatingNav() {
           <NavItem
             href="#benefits"
             icon={<Star />}
-            label="Benefits"
+            label="Beneficios"
             vertical
             isActive={active === "benefits"}
             onClick={() => handleNavClick("benefits")}
@@ -191,7 +191,7 @@ export default function FloatingNav() {
           <NavItem
             href="#contact"
             icon={<Mail />}
-            label="Contact"
+            label="Contacto"
             vertical
             isActive={active === "contact"}
             onClick={() => handleNavClick("contact")}
