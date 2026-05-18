@@ -26,6 +26,17 @@ export const metadata: Metadata = {
     "next.js",
     "react",
     "landing pages",
+    "desarrollador web freelance",
+    "crear pagina web",
+    "agencia de diseño web",
+    "desarrollo web Argentina",
+    "paginas web profesionales",
+    "seo para negocios",
+    "tiendas online cordoba",
+    "desarrollo web villa general belgrano",
+    "desarrollo web calamuchita",
+    "diseño UI UX",
+    "desarrollo web responsive",
   ],
 
   robots: {
@@ -121,6 +132,66 @@ export default function RootLayout({
     ],
   };
 
+  const reviewSchema = {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    "itemReviewed": {
+      "@type": "ProfessionalService",
+      "name": "Maxivaz",
+      "image": "https://maxivaz.com.ar/p.png",
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": "5",
+      "bestRating": "5",
+    },
+    "name": "Excelente servicio de desarrollo web",
+    "author": {
+      "@type": "Person",
+      "name": "Cliente satisfecho",
+    },
+    "reviewBody": " professionalism and quality of work exceeded our expectations. Highly recommended for any web project.",
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Cuánto tiempo toma desarrollar un sitio web?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "El tiempo de desarrollo varía según la complejidad del proyecto. Una landing page puede estar lista en 5-7 días, mientras que un sitio web corporativo o e-commerce puede tomar 2-4 semanas.",
+        },
+      },
+      {
+        "@type": "Question",
+        "name": "¿El sitio web es optimizado para SEO?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sí, todos nuestros proyectos incluyen optimización SEO básica: metadata, estructura semántica, velocidad optimizada, imágenes comprimidas y compatibilidad con dispositivos móviles.",
+        },
+      },
+      {
+        "@type": "Question",
+        "name": "¿Puedo editar el contenido del sitio después de entregado?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Absolutamente. Entregamos un CMS intuitivo o panel de administración para que puedas modificar textos, imágenes y secciones sin conocimientos técnicos.",
+        },
+      },
+      {
+        "@type": "Question",
+        "name": "¿Ofrecen mantenimiento posterior?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sí, ofrecemos planes de mantenimiento mensuales que incluyen actualizaciones, soporte técnico y mejoras continuas.",
+        },
+      },
+    ],
+  };
+
   return (
     <html lang="es" suppressHydrationWarning>
       <head>
@@ -156,6 +227,18 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(jsonLd),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(reviewSchema),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(faqSchema),
           }}
         />
 

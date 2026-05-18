@@ -11,38 +11,17 @@ import PageTransition from "@/components/pageTransition";
 
 export const metadata: Metadata = {
   title:
-    "Desarrollo Web en Calamuchita y Córdoba",
+    "Desarrollo Web en Calamuchita y Córdoba | Maxivaz Studio",
 
   description:
     "Creamos páginas web profesionales, modernas y optimizadas para Google en Córdoba y el Valle de Calamuchita.",
 
   openGraph: {
     title:
-      "Desarrollo Web en Calamuchita y Córdoba",
+      "Desarrollo Web en Calamuchita y Córdoba | Maxivaz Studio",
 
     description:
       "Sitios web modernos enfocados en SEO, velocidad y conversión para negocios y marcas.",
-
-    url: "https://maxivaz.com.ar",
-
-    siteName: "Desarrollo Web en Calamuchita y Córdoba | Maxivaz studio",
-
-    locale: "es_AR",
-
-    type: "website",
-
-    images: [
-      {
-        url: "/p.png",
-        width: 1200,
-        height: 630,
-        alt: "Desarrollo Web en Calamuchita",
-      },
-    ],
-  },
-
-  alternates: {
-    canonical: "https://maxivaz.com.ar",
   },
 };
 

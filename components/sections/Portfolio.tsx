@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ExternalLink, ArrowUpRight } from "lucide-react";
 import { useTheme } from "@/context/themeContext";
 
@@ -48,10 +49,12 @@ export default function Portfolio() {
           >
             <div className="flex flex-col lg:flex-row">
               <div className="w-full lg:w-[55%] relative overflow-hidden h-[300px] lg:h-auto border-b lg:border-b-0 lg:border-r border-black/5 dark:border-white/10 bg-black/5 dark:bg-white/[0.03] flex items-center justify-center">
-                <img
+                <Image
                   src="/image/portfolio.png"
                   alt="Portfolio personal"
-                  className="w-full h-full object-contain p-4 transition-transform duration-700 group-hover:scale-[1.03]"
+                  fill
+                  className="object-contain p-4 transition-transform duration-700 group-hover:scale-[1.03]"
+                  sizes="(max-width: 768px) 100vw, 55vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/10 dark:from-black/30 to-transparent pointer-events-none" />
               </div>
@@ -89,7 +92,13 @@ export default function Portfolio() {
               className="group relative h-full flex flex-col rounded-[2rem] border border-black/5 dark:border-white/5 bg-white/80 dark:bg-white/[0.03] backdrop-blur-md transition-all duration-500 hover:-translate-y-2 hover:shadow-xl"
             >
               <div className="aspect-video overflow-hidden border-b border-black/5 dark:border-white/10">
-                <img src="/image/p7.png" alt="Cabañas" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <Image
+                  src="/image/p7.png"
+                  alt="Cabañas"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
               </div>
               <div className="p-10">
                 <h3 className="text-2xl font-bold mb-3">Web de Cabañas</h3>
