@@ -7,11 +7,11 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   metadataBase: new URL("https://maxivaz.com.ar"),
 
-  title: {
-    default:
-      "Desarrollo Web Profesional en Calamuchita y Córdoba",
-    template: "%s",
-  },
+title: {
+  default:
+    "Desarrollo Web Córdoba | Crear Página Web Profesional",
+  template: "%s | Desarrollo Web Córdoba",
+},
 
   description:
     "Creamos páginas web profesionales, rápidas y optimizadas para Google (SEO) en Córdoba y el Valle de Calamuchita.",
