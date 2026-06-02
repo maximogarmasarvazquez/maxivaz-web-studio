@@ -9,19 +9,21 @@ export const metadata: Metadata = {
 
 title: {
   default:
-    "Desarrollo Web Córdoba | Crear Página Web Profesional",
-  template: "%s | Desarrollo Web Córdoba",
+    "Páginas Web Calamuchita | Crear Página Web Profesional",
+  template: "%s | Páginas Web Calamuchita",
 },
 
   description:
-    "Creamos páginas web profesionales, rápidas y optimizadas para Google (SEO) en Córdoba y el Valle de Calamuchita.",
+    "Creamos páginas web profesionales, rápidas y optimizadas para Google (SEO) en Calamuchita, Córdoba y toda Argentina.",
 
   keywords: [
-    "desarrollo web calamuchita",
-    "desarrollo web cordoba",
-    "diseño web calamuchita",
-    "diseño web cordoba",
+    "paginas web calamuchita",
     "paginas web cordoba",
+    "desarrollo web calamuchita",
+    "diseño web calamuchita",
+    "crear pagina web calamuchita",
+    "desarrollo web cordoba",
+    "diseño web cordoba",
     "seo cordoba",
     "next.js",
     "react",
@@ -34,7 +36,6 @@ title: {
     "seo para negocios",
     "tiendas online cordoba",
     "desarrollo web villa general belgrano",
-    "desarrollo web calamuchita",
     "diseño UI UX",
     "desarrollo web responsive",
   ],
@@ -46,10 +47,10 @@ title: {
 
   openGraph: {
     title:
-      "Desarrollo Web Profesional en Calamuchita y Córdoba",
+      "Páginas Web Calamuchita | Maxivaz Web Studio",
 
     description:
-      "Diseño y desarrollo web moderno para negocios, marcas y emprendimientos.",
+      "Creación de páginas web profesionales en Calamuchita y Córdoba. Diseño moderno, rápido y optimizado para SEO.",
 
     url: "https://maxivaz.com.ar",
 
@@ -97,7 +98,7 @@ export default function RootLayout({
     priceRange: "$$",
 
     description:
-      "Servicio profesional de diseño y desarrollo web en Córdoba y Calamuchita.",
+      "Páginas web profesionales en Calamuchita y Córdoba. Servicio de diseño y desarrollo web.",
 
     serviceType: [
       "Desarrollo Web",
